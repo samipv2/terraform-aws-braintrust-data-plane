@@ -4,7 +4,7 @@ output "main_vpc_id" {
 }
 
 output "quarantine_vpc_id" {
-  value       = module.quarantine_vpc.vpc_id
+  value       = var.enable_quarantine ? module.quarantine_vpc[0].vpc_id : null
   description = "ID of the optional quarantine VPC that user functions run inside of."
 }
 
