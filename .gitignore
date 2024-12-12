@@ -40,3 +40,9 @@ terraform.rc
 # backend or provider configs. Users will set that up themselves.
 terraform.tf
 provider.tf
+
+# Ignore the braintrust-sandbox directory as it is used for internal testing
+braintrust-sandbox/*
+
+# Ignore IntelliJ IDEA project files
+.idea
