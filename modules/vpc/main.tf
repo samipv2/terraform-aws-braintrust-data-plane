@@ -15,7 +15,7 @@ resource "aws_internet_gateway" "internet_gateway" {
 }
 
 resource "aws_eip" "nat_public_ip" {
-  domain = "vpc"
+  domain     = "vpc"
   depends_on = [aws_internet_gateway.internet_gateway]
 }
 
@@ -72,7 +72,7 @@ resource "aws_subnet" "private_subnet_1" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = var.private_subnet_1_cidr
   availability_zone = var.private_subnet_1_az
-  
+
   tags = {
     Name = "${var.deployment_name}-${var.vpc_name}-private-subnet-1"
   }
@@ -82,7 +82,7 @@ resource "aws_subnet" "private_subnet_2" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = var.private_subnet_2_cidr
   availability_zone = var.private_subnet_2_az
-  
+
   tags = {
     Name = "${var.deployment_name}-${var.vpc_name}-private-subnet-2"
   }
@@ -92,7 +92,7 @@ resource "aws_subnet" "private_subnet_3" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = var.private_subnet_3_cidr
   availability_zone = var.private_subnet_3_az
-  
+
   tags = {
     Name = "${var.deployment_name}-${var.vpc_name}-private-subnet-3"
   }

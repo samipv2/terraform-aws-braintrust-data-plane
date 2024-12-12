@@ -19,11 +19,11 @@ output "main_vpc_private_subnet_1_id" {
 }
 
 output "main_vpc_private_subnet_2_id" {
-  value = module.main_vpc.private_subnet_2_id
+  value       = module.main_vpc.private_subnet_2_id
   description = "ID of the second private subnet in the main VPC"
 }
 
 output "main_vpc_private_subnet_3_id" {
-  value = module.main_vpc.private_subnet_3_id
+  value       = module.main_vpc.private_subnet_3_id
   description = "ID of the third private subnet in the main VPC"
 }

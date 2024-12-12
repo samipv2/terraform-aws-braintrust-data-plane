@@ -2,8 +2,8 @@ module "main_vpc" {
   source = "./modules/vpc"
 
   deployment_name = var.deployment_name
-  vpc_name       = "main"
-  vpc_cidr       = var.vpc_cidr
+  vpc_name        = "main"
+  vpc_cidr        = var.vpc_cidr
 
   public_subnet_1_cidr  = cidrsubnet(var.vpc_cidr, 8, 0)
   public_subnet_1_az    = local.public_subnet_1_az
@@ -20,8 +20,8 @@ module "quarantine_vpc" {
   count  = var.enable_quarantine ? 1 : 0
 
   deployment_name = var.deployment_name
-  vpc_name       = "quarantine"
-  vpc_cidr       = var.quarantine_vpc_cidr
+  vpc_name        = "quarantine"
+  vpc_cidr        = var.quarantine_vpc_cidr
 
   public_subnet_1_cidr  = cidrsubnet(var.quarantine_vpc_cidr, 8, 0)
   public_subnet_1_az    = local.quarantine_public_subnet_1_az
