@@ -32,3 +32,13 @@ output "postgres_database_arn" {
   value       = var.managed_postgres ? module.database[0].postgres_database_arn : null
   description = "ARN of the main Braintrust Postgres database"
 }
+
+output "redis_endpoint" {
+  value       = module.redis.redis_endpoint
+  description = "Endpoint of the Redis cluster"
+}
+
+output "redis_port" {
+  value       = module.redis.redis_port
+  description = "Port of the Redis cluster"
+}

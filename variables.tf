@@ -116,3 +116,15 @@ variable "postgres_version" {
   type        = string
   default     = "15.5"
 }
+
+variable "redis_instance_type" {
+  description = "Instance type for the Redis cluster"
+  type        = string
+  default     = "cache.t4g.small"
+}
+
+variable "redis_version" {
+  description = "Redis engine version"
+  type        = string
+  default     = "7.0"
+}
