@@ -1,0 +1,37 @@
+resource "aws_lambda_function" "migrate_database" {
+  s3_bucket     = local.lambda_s3_bucket
+  s3_key        = local.lambda_versions["MigrateDatabaseFunction"]
+  function_name = "${var.deployment_name}-MigrateDatabaseFunction"
+  role          = aws_iam_role.default_role.arn
+  handler       = "lambda_function.lambda_handler"
+  runtime       = "python3.11"
+  memory_size   = 1024
+  timeout       = 900
+  publish       = true
+
+  environment {
+    variables = {
+      BRAINTRUST_RUN_DRAFT_MIGRATIONS = var.run_draft_migrations
+      PG_URL                          = local.postgres_url
+    }
+  }
+
+  vpc_config {
+    subnet_ids         = var.service_subnet_ids
+    security_group_ids = var.service_security_group_ids
+  }
+}
+
+resource "aws_lambda_alias" "migrate_database_live" {
+  name             = "live"
+  function_name    = aws_lambda_function.migrate_database.function_name
+  function_version = aws_lambda_function.migrate_database.version
+}
+
+resource "aws_lambda_invocation" "invoke_database_migration" {
+  function_name = aws_lambda_function.migrate_database.function_name
+  input         = "{}"
+  triggers = {
+    function_version = aws_lambda_function.migrate_database.version
+  }
+}

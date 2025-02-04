@@ -1,4 +1,7 @@
 resource "aws_lambda_function" "api_handler" {
+  # Require the DB migrations to be run before the API handler is deployed
+  depends_on = [aws_lambda_invocation.invoke_database_migration]
+
   s3_bucket     = local.lambda_s3_bucket
   s3_key        = local.lambda_versions["APIHandler"]
   function_name = "${var.deployment_name}-APIHandler"

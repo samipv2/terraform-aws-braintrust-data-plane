@@ -34,8 +34,6 @@ variable "postgres_password" {
   sensitive   = true
 }
 
-
-
 variable "postgres_host" {
   type        = string
   description = "The host of the postgres database, optionally including the port. Format: host[:port]"
@@ -123,4 +121,10 @@ variable "api_handler_provisioned_concurrency" {
   type        = number
   description = "The number API Handler instances to provision and keep alive. This reduces cold start times and improves latency, with some increase in cost."
   default     = 1
+}
+
+variable "run_draft_migrations" {
+  type        = bool
+  description = "Enable draft migrations for database schema updates"
+  default     = false
 }
