@@ -85,20 +85,40 @@ variable "quarantine_vpc_private_subnets" {
   }
 }
 
+variable "brainstore_enabled" {
+  type        = bool
+  description = "Whether Brainstore is enabled"
+  default     = false
+}
+
 variable "brainstore_hostname" {
   type        = string
   description = "Hostname for Brainstore"
+  default     = ""
+  validation {
+    condition     = var.brainstore_enabled ? var.brainstore_hostname != null : true
+    error_message = "Brainstore hostname is required when Brainstore is enabled."
+  }
 }
 
 variable "brainstore_port" {
   type        = number
   description = "Port for Brainstore"
   default     = 4000
+  validation {
+    condition     = var.brainstore_enabled ? var.brainstore_port != null : true
+    error_message = "Brainstore port is required when Brainstore is enabled."
+  }
 }
 
 variable "brainstore_s3_bucket_name" {
   type        = string
   description = "Name of the Brainstore S3 bucket"
+  default     = ""
+  validation {
+    condition     = var.brainstore_enabled ? var.brainstore_s3_bucket_name != null : true
+    error_message = "Brainstore S3 bucket name is required when Brainstore is enabled."
+  }
 }
 
 variable "whitelisted_origins" {

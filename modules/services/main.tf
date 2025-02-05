@@ -17,5 +17,10 @@ locals {
   lambda_versions = jsondecode(file("${path.module}/VERSIONS.json"))
 
   postgres_url = "postgres://${var.postgres_username}:${var.postgres_password}@${var.postgres_host}/postgres"
+  lambda_versions      = jsondecode(file("${path.module}/VERSIONS.json"))
+  postgres_url         = "postgres://${var.postgres_username}:${var.postgres_password}@${var.postgres_host}/postgres"
+  brainstore_url       = var.brainstore_enabled ? "http://${var.brainstore_hostname}:${var.brainstore_port}" : ""
+  brainstore_s3_bucket = var.brainstore_enabled ? var.brainstore_s3_bucket_name : ""
+}
 
 }

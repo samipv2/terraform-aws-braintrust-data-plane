@@ -55,9 +55,9 @@ resource "aws_lambda_function" "api_handler" {
 
       FUNCTION_SECRET_KEY = aws_secretsmanager_secret_version.function_tools_secret.secret_string
 
-      BRAINSTORE_ENABLED             = true
-      BRAINSTORE_URL                 = "http://${var.brainstore_hostname}:${var.brainstore_port}"
-      BRAINSTORE_REALTIME_WAL_BUCKET = var.brainstore_s3_bucket_name
+      BRAINSTORE_ENABLED             = var.brainstore_enabled
+      BRAINSTORE_URL                 = local.brainstore_url
+      BRAINSTORE_REALTIME_WAL_BUCKET = local.brainstore_s3_bucket
     }
   }
 
@@ -93,7 +93,6 @@ resource "aws_lambda_permission" "api_handler_invoke" {
   source_arn = "${var.rest_api_execution_arn}/*"
 }
 
-# Create a new IAM role for AI Proxy invocation
 resource "aws_iam_role" "ai_proxy_invoke_role" {
   name = "${var.deployment_name}-AIProxyInvokeRole"
   assume_role_policy = jsonencode({
