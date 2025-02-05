@@ -1,3 +1,5 @@
+data "aws_region" "current" {}
+
 resource "aws_vpc" "vpc" {
   cidr_block = var.vpc_cidr
 
@@ -116,4 +118,15 @@ resource "aws_route_table_association" "private_subnet_3_association" {
 resource "aws_route_table_association" "public_subnet_1_association" {
   route_table_id = aws_route_table.public_route_table.id
   subnet_id      = aws_subnet.public_subnet_1.id
-} 
+}
+
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id            = aws_vpc.vpc.id
+  service_name      = "com.amazonaws.${data.aws_region.current.name}.s3"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = [aws_route_table.private_route_table.id]
+  subnet_ids        = [aws_subnet.private_subnet_1.id, aws_subnet.private_subnet_2.id, aws_subnet.private_subnet_3.id]
+  tags = {
+    Name = "${var.deployment_name}-${var.vpc_name}-s3-endpoint"
+  }
+}
