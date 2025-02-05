@@ -1,14 +1,9 @@
 [tools]
 tflint = "latest"
 pre-commit = "latest"
-terraform = "1"
+terraform = "1.10"
 
 [tasks]
 setup = ["pre-commit install", "tflint --init"]
-lint = [
-    "terraform fmt", 
-    "tflint",
-    "tflint --chdir modules --recursive"
-]
+lint = ["terraform fmt", "tflint", "tflint --chdir modules --recursive"]
 precommit = ["pre-commit run --all-files"]
-
