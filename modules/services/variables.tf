@@ -8,11 +8,6 @@ variable "deployment_name" {
   description = "Name of this deployment. Will be included in resource names"
 }
 
-variable "service_vpc_id" {
-  type        = string
-  description = "The VPC ID for the lambda functions that are the main braintrust service"
-}
-
 variable "service_security_group_ids" {
   type        = list(string)
   description = "The security group ids to apply to the lambda functions that are the main braintrust service"
