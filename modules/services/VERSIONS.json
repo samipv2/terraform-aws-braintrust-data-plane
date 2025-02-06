@@ -1,6 +1,7 @@
 {
-    "AIProxy": "lambda/AIProxy/versions/1f288929d305c28a0569aa6b823b485d.zip",
-    "APIHandler": "lambda/APIHandler/versions/a4ff50add3da3d87d7fe61749d184a33.zip",
-    "MigrateDatabaseFunction": "lambda/MigrateDatabaseFunction/versions/7d8a0cf8b4335353e46cf8c8c68d0594.zip",
-    "QuarantineWarmupFunction": "lambda/QuarantineWarmupFunction/versions/799c7cbaf60e3c07b2d41420dff89194.zip"
+    "AIProxy": "lambda/AIProxy/versions/42886db71d6696b17139fcdccd80a839.zip",
+    "APIHandler": "lambda/APIHandler/versions/cfcbf96abac1cc3bed07d2995b90b0f3.zip",
+    "MigrateDatabaseFunction": "lambda/MigrateDatabaseFunction/versions/f8fc044980f07735bcd06eb75986b8c2.zip",
+    "QuarantineWarmupFunction": "lambda/QuarantineWarmupFunction/versions/810dff371fb340cdf3252048185b4d71.zip",
+    "CatchupETL": "lambda/CatchupETL/versions/e752725589237cdf16152147a953f1d5.zip"
 }
