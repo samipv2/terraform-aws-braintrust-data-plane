@@ -125,7 +125,19 @@ resource "aws_vpc_endpoint" "s3" {
   service_name      = "com.amazonaws.${data.aws_region.current.name}.s3"
   vpc_endpoint_type = "Gateway"
   route_table_ids   = [aws_route_table.private_route_table.id]
-  subnet_ids        = [aws_subnet.private_subnet_1.id, aws_subnet.private_subnet_2.id, aws_subnet.private_subnet_3.id]
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect    = "Allow",
+        Action    = ["s3:*"],
+        Principal = "*",
+        Resource  = ["*"]
+      }
+    ]
+  })
+
   tags = {
     Name = "${var.deployment_name}-${var.vpc_name}-s3-endpoint"
   }
