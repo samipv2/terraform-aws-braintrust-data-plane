@@ -77,9 +77,9 @@ module "services" {
   redis_host        = module.redis.redis_endpoint
   redis_port        = module.redis.redis_port
   # TODO: Brainstore
-  brainstore_hostname       = var.brainstore_hostname
-  brainstore_port           = var.brainstore_port
-  brainstore_s3_bucket_name = var.brainstore_s3_bucket_name
+  # brainstore_hostname       = var.brainstore_hostname
+  # brainstore_port           = var.brainstore_port
+  # brainstore_s3_bucket_name = var.brainstore_s3_bucket_name
 
   # Service configuration
   braintrust_org_name                 = var.braintrust_org_name
