@@ -1,5 +1,5 @@
 resource "aws_secretsmanager_secret" "function_tools_secret" {
-  name        = "${var.deployment_name}/FunctionToolsSecret"
+  name_prefix = "${var.deployment_name}/FunctionToolsSecret-"
   description = "Function environment variables encryption key"
 }
 
