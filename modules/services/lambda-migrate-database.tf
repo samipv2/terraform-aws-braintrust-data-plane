@@ -22,12 +22,14 @@ resource "aws_lambda_function" "migrate_database" {
   }
 }
 
+# This is mainly for convenience to be able to manually invoke the latest
 resource "aws_lambda_alias" "migrate_database_live" {
   name             = "live"
   function_name    = aws_lambda_function.migrate_database.function_name
   function_version = aws_lambda_function.migrate_database.version
 }
 
+# Invoke the database migration lambda function every time the version changes
 resource "aws_lambda_invocation" "invoke_database_migration" {
   function_name = aws_lambda_function.migrate_database.function_name
   input         = "{}"
