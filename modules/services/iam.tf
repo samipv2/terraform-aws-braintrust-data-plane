@@ -89,7 +89,7 @@ resource "aws_iam_role_policy_attachments_exclusive" "api_handler_exclusive" {
       "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole",
       aws_iam_policy.api_handler_policy.arn,
     ],
-    try(aws_iam_policy.api_handler_quarantine[0].arn, [])
+    try([aws_iam_policy.api_handler_quarantine[0].arn], [])
   )
 }
 
