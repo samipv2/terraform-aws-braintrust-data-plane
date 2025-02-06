@@ -83,15 +83,15 @@ resource "aws_lambda_provisioned_concurrency_config" "api_handler_live" {
 
 resource "aws_lambda_alias" "api_handler_live" {
   name             = "live"
-  function_name    = aws_lambda_function.api_handler_js.function_name
-  function_version = aws_lambda_function.api_handler_js.version
+  function_name    = aws_lambda_function.api_handler.function_name
+  function_version = aws_lambda_function.api_handler.version
 }
 
 # TODO: For when API Gateway is completed
 # resource "aws_lambda_permission" "api_handler_invoke" {
 #   statement_id  = "AllowAPIGatewayInvoke"
 #   action        = "lambda:InvokeFunction"
-#   function_name = aws_lambda_function.api_handler_js.function_name
+#   function_name = aws_lambda_function.api_handler.function_name
 #   principal     = "apigateway.amazonaws.com"
 #   # TODO
 #   source_arn = "${var.rest_api_execution_arn}/*"
