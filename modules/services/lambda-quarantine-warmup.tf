@@ -39,7 +39,9 @@ resource "aws_lambda_function" "quarantine_warmup" {
 
 # Invoke the quarantine warmup lambda function every time the api handler is deployed
 resource "aws_lambda_invocation" "invoke_quarantine_warmup" {
-  function_name = aws_lambda_function.quarantine_warmup.function_name
+  count = var.use_quarantine_vpc ? 1 : 0
+
+  function_name = aws_lambda_function.quarantine_warmup[0].function_name
   input         = "{}"
   triggers = {
     function_version = aws_lambda_function.api_handler.version
