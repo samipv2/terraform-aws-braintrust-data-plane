@@ -1,7 +1,7 @@
 resource "aws_lambda_function" "migrate_database" {
+  function_name = "${var.deployment_name}-MigrateDatabaseFunction"
   s3_bucket     = local.lambda_s3_bucket
   s3_key        = local.lambda_versions["MigrateDatabaseFunction"]
-  function_name = "${var.deployment_name}-MigrateDatabaseFunction"
   role          = aws_iam_role.default_role.arn
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.11"

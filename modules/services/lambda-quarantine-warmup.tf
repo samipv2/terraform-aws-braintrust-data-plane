@@ -1,9 +1,9 @@
 resource "aws_lambda_function" "quarantine_warmup" {
   count = var.use_quarantine_vpc ? 1 : 0
 
+  function_name = "${var.deployment_name}-QuarantineWarmupFunction"
   s3_bucket     = local.lambda_s3_bucket
   s3_key        = local.lambda_versions["QuarantineWarmupFunction"]
-  function_name = "${var.deployment_name}-QuarantineWarmupFunction"
   role          = aws_iam_role.api_handler_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
