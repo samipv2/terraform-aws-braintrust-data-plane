@@ -1,9 +1,7 @@
 resource "aws_lambda_function" "catchup_etl" {
-  depends_on = [aws_secretsmanager_secret.database_secret, aws_secretsmanager_secret.clickhouse_secret]
-
+  function_name = "${var.deployment_name}-CatchupETL"
   s3_bucket     = local.lambda_s3_bucket
   s3_key        = local.lambda_versions["CatchupETL"]
-  function_name = "${var.deployment_name}-CatchupETL"
   role          = aws_iam_role.default_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
