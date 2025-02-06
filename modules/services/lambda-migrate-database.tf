@@ -4,7 +4,7 @@ resource "aws_lambda_function" "migrate_database" {
   s3_key        = local.lambda_versions["MigrateDatabaseFunction"]
   role          = aws_iam_role.default_role.arn
   handler       = "lambda_function.lambda_handler"
-  runtime       = "python3.11"
+  runtime       = "python3.9"
   memory_size   = 1024
   timeout       = 900
   publish       = true
@@ -32,7 +32,7 @@ resource "aws_lambda_alias" "migrate_database_live" {
 # Invoke the database migration lambda function every time the version changes
 resource "aws_lambda_invocation" "invoke_database_migration" {
   function_name = aws_lambda_function.migrate_database.function_name
-  input         = "{}"
+  input         = jsonencode({})
   triggers = {
     function_version = aws_lambda_function.migrate_database.version
   }
