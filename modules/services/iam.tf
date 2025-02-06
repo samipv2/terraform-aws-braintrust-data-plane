@@ -16,7 +16,7 @@ resource "aws_iam_role" "quarantine_invoke_role" {
 }
 
 resource "aws_iam_role_policy" "quarantine_invoke_policy" {
-  name = "QuarantineInvokeRolePolicy"
+  name = "${var.deployment_name}-QuarantineInvokeRolePolicy"
   role = aws_iam_role.quarantine_invoke_role.id
   policy = jsonencode({
     Statement = [
@@ -236,7 +236,7 @@ resource "aws_iam_role_policy_attachment" "lambda_vpc_access" {
 }
 
 resource "aws_iam_role_policy" "default_role_policy" {
-  name = "DefaultRolePolicy"
+  name = "${var.deployment_name}-DefaultRolePolicy"
   role = aws_iam_role.default_role.id
 
   policy = jsonencode({
