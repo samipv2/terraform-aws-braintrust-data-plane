@@ -105,11 +105,45 @@ resource "aws_iam_policy" "api_handler_quarantine" {
         Resource = "*"
         Condition = {
           StringEquals = {
-            "aws:ResourceTag/BraintrustQuarantine"     = "true"
-            "aws:ResourceTag/BraintrustDeploymentName" = var.deployment_name
+            "aws:ResourceTag/BraintrustQuarantine" = "true"
           }
         }
-      }
+      },
+      {
+        Action = [
+          "lambda:CreateFunction",
+          "lambda:PublishVersion"
+        ],
+        Resource = "arn:aws:lambda:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:function:*"
+        Effect   = "Allow"
+        Sid      = "QuarantinePublish"
+        Condition = {
+          StringEquals = {
+            "lambda:VpcIds" = var.quarantine_vpc_id
+          }
+        }
+      },
+      {
+        Action   = ["lambda:TagResource"]
+        Effect   = "Allow"
+        Resource = "*"
+        Condition = {
+          StringEquals = {
+            "aws:ResourceTag/BraintrustQuarantine" = "true"
+          }
+        }
+        Sid = "TagQuarantine"
+      },
+      {
+        Action   = ["lambda:DeleteFunction", "lambda:UpdateFunctionCode", "lambda:UpdateFunctionConfiguration", "lambda:GetFunctionConfiguration"]
+        Effect   = "Allow"
+        Resource = "*"
+        Condition = {
+          StringEquals = {
+            "aws:ResourceTag/BraintrustQuarantine" = "true"
+          }
+        }
+      },
     ]
   })
 }
@@ -161,43 +195,7 @@ resource "aws_iam_policy" "api_handler_policy" {
         Effect   = "Allow"
         Resource = aws_lambda_function.catchup_etl.arn
       },
-      {
-        Action = [
-          "lambda:CreateFunction",
-          "lambda:PublishVersion"
-        ]
-        Effect   = "Deny"
-        Resource = "*"
-        Condition = {
-          StringNotEquals = {
-            "lambda:VpcIds" = var.use_quarantine_vpc ? var.quarantine_vpc_id : ""
-          }
-        }
-        Sid = "EnforceQuarantineVPC"
-      },
-      {
-        Action   = ["lambda:TagResource"]
-        Effect   = "Allow"
-        Resource = "*"
-        Condition = {
-          StringEquals = {
-            "aws:ResourceTag/BraintrustQuarantine"     = "true"
-            "aws:ResourceTag/BraintrustDeploymentName" = var.deployment_name
-          }
-        }
-        Sid = "TagQuarantine"
-      },
-      {
-        Action   = ["lambda:DeleteFunction", "lambda:UpdateFunctionCode", "lambda:UpdateFunctionConfiguration", "lambda:GetFunctionConfiguration"]
-        Effect   = "Allow"
-        Resource = "*"
-        Condition = {
-          StringEquals = {
-            "aws:ResourceTag/BraintrustQuarantine"     = "true"
-            "aws:ResourceTag/BraintrustDeploymentName" = var.deployment_name
-          }
-        }
-      },
+
       {
         Action   = "iam:PassRole"
         Effect   = "Allow"
