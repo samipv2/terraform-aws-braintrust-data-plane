@@ -12,7 +12,9 @@ resource "aws_lambda_function" "quarantine_warmup" {
 
   environment {
     variables = {
-      ORG_NAME   = var.braintrust_org_name
+      ORG_NAME                   = var.braintrust_org_name
+      BRAINTRUST_DEPLOYMENT_NAME = var.deployment_name
+
       PG_URL     = local.postgres_url
       REDIS_HOST = var.redis_host
       REDIS_PORT = var.redis_port
