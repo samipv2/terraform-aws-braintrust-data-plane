@@ -1,4 +1,5 @@
 {
+    "_tag": "latest",
     "AIProxy": "lambda/AIProxy/versions/42886db71d6696b17139fcdccd80a839.zip",
     "APIHandler": "lambda/APIHandler/versions/cfcbf96abac1cc3bed07d2995b90b0f3.zip",
     "MigrateDatabaseFunction": "lambda/MigrateDatabaseFunction/versions/f379caf8eee369d75b5893a7153b52d8.zip",

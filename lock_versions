@@ -42,7 +42,6 @@ for lambda_name in lambdas:
 
 
 print("Writing versions to VERSIONS.json...")
-# Get the script's directory and construct the path to VERSIONS.json
 script_dir = os.path.dirname(os.path.abspath(__file__))
 versions_path = os.path.join(script_dir, "modules", "services", "VERSIONS.json")
 
