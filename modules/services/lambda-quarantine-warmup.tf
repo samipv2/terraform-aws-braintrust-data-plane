@@ -34,6 +34,10 @@ resource "aws_lambda_function" "quarantine_warmup" {
     security_group_ids = var.service_security_group_ids
   }
 
+  ephemeral_storage {
+    size = 4096
+  }
+
   tracing_config {
     mode = "PassThrough"
   }
