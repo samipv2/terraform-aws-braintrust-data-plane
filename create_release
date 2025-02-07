@@ -3,6 +3,7 @@
 import json
 import urllib.request
 import sys
+import os
 
 # This script is for hard coding the latest lambda versions to VERSIONS.json
 # as part of the release process for this terraform module
@@ -39,5 +40,9 @@ for lambda_name in lambdas:
 
 
 print("Writing versions to VERSIONS.json...")
-with open("modules/services/VERSIONS.json", "w") as f:
+# Get the script's directory and construct the path to VERSIONS.json
+script_dir = os.path.dirname(os.path.abspath(__file__))
+versions_path = os.path.join(script_dir, "modules", "services", "VERSIONS.json")
+
+with open(versions_path, "w") as f:
     json.dump(versions, f, indent=4)
