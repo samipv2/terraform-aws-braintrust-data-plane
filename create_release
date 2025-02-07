@@ -29,7 +29,9 @@ ecr_images = ["braintrust/brainstore"]
 
 base_url = "https://braintrust-assets-us-east-1.s3.us-east-1.amazonaws.com/lambda"
 
-versions = {}
+versions = {
+    "_tag": version_tag,
+}
 for lambda_name in lambdas:
     print(f"Fetching {version_tag} version for {lambda_name}...")
     with urllib.request.urlopen(
