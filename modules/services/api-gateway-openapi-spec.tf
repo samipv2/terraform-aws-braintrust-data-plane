@@ -15,7 +15,7 @@ locals {
     }
     x-amazon-apigateway-integration = local.snippet_api_gateway_integration
   }
-  snippet_api_json_text_method = merge(local_snippet_api_json_method, {
+  snippet_api_json_text_method = merge(local.snippet_api_json_method, {
     consumes = ["application/json", "text/plain"]
   })
   snippet_api_gateway_integration = {
