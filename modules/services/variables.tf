@@ -8,11 +8,6 @@ variable "deployment_name" {
   description = "Name of this deployment. Will be included in resource names"
 }
 
-variable "service_vpc_id" {
-  type        = string
-  description = "The VPC ID for the lambda functions that are the main braintrust service"
-}
-
 variable "service_security_group_ids" {
   type        = list(string)
   description = "The security group ids to apply to the lambda functions that are the main braintrust service"
@@ -33,8 +28,6 @@ variable "postgres_password" {
   description = "The password of the postgres database"
   sensitive   = true
 }
-
-
 
 variable "postgres_host" {
   type        = string
@@ -87,20 +80,40 @@ variable "quarantine_vpc_private_subnets" {
   }
 }
 
+variable "brainstore_enabled" {
+  type        = bool
+  description = "Whether Brainstore is enabled"
+  default     = false
+}
+
 variable "brainstore_hostname" {
   type        = string
   description = "Hostname for Brainstore"
+  default     = ""
+  validation {
+    condition     = var.brainstore_enabled ? var.brainstore_hostname != null : true
+    error_message = "Brainstore hostname is required when Brainstore is enabled."
+  }
 }
 
 variable "brainstore_port" {
   type        = number
   description = "Port for Brainstore"
   default     = 4000
+  validation {
+    condition     = var.brainstore_enabled ? var.brainstore_port != null : true
+    error_message = "Brainstore port is required when Brainstore is enabled."
+  }
 }
 
 variable "brainstore_s3_bucket_name" {
   type        = string
   description = "Name of the Brainstore S3 bucket"
+  default     = ""
+  validation {
+    condition     = var.brainstore_enabled ? var.brainstore_s3_bucket_name != null : true
+    error_message = "Brainstore S3 bucket name is required when Brainstore is enabled."
+  }
 }
 
 variable "whitelisted_origins" {
@@ -123,4 +136,10 @@ variable "api_handler_provisioned_concurrency" {
   type        = number
   description = "The number API Handler instances to provision and keep alive. This reduces cold start times and improves latency, with some increase in cost."
   default     = 1
+}
+
+variable "run_draft_migrations" {
+  type        = bool
+  description = "Enable draft migrations for database schema updates"
+  default     = false
 }

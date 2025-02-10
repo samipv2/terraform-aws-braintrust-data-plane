@@ -1,7 +1,13 @@
+locals {
+  api_handler_function_name = "${var.deployment_name}-APIHandler"
+}
 resource "aws_lambda_function" "api_handler" {
+  # Require the DB migrations to be run before the API handler is deployed
+  depends_on = [aws_lambda_invocation.invoke_database_migration]
+
+  function_name = local.api_handler_function_name
   s3_bucket     = local.lambda_s3_bucket
   s3_key        = local.lambda_versions["APIHandler"]
-  function_name = "${var.deployment_name}-APIHandler"
   role          = aws_iam_role.api_handler_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
@@ -12,7 +18,7 @@ resource "aws_lambda_function" "api_handler" {
 
   logging_config {
     log_format = "Text"
-    log_group  = "/braintrust/${var.deployment_name}/${aws_lambda_function.api_handler.function_name}"
+    log_group  = "/braintrust/${var.deployment_name}/${local.api_handler_function_name}"
   }
 
   layers = [
@@ -26,7 +32,9 @@ resource "aws_lambda_function" "api_handler" {
 
   environment {
     variables = {
-      ORG_NAME            = var.braintrust_org_name
+      ORG_NAME                   = var.braintrust_org_name
+      BRAINTRUST_DEPLOYMENT_NAME = var.deployment_name
+
       PG_URL              = local.postgres_url
       REDIS_HOST          = var.redis_host
       REDIS_PORT          = var.redis_port
@@ -52,9 +60,9 @@ resource "aws_lambda_function" "api_handler" {
 
       FUNCTION_SECRET_KEY = aws_secretsmanager_secret_version.function_tools_secret.secret_string
 
-      BRAINSTORE_ENABLED             = true
-      BRAINSTORE_URL                 = "http://${var.brainstore_hostname}:${var.brainstore_port}"
-      BRAINSTORE_REALTIME_WAL_BUCKET = var.brainstore_s3_bucket_name
+      BRAINSTORE_ENABLED             = var.brainstore_enabled
+      BRAINSTORE_URL                 = local.brainstore_url
+      BRAINSTORE_REALTIME_WAL_BUCKET = local.brainstore_s3_bucket
     }
   }
 
@@ -77,20 +85,20 @@ resource "aws_lambda_provisioned_concurrency_config" "api_handler_live" {
 
 resource "aws_lambda_alias" "api_handler_live" {
   name             = "live"
-  function_name    = aws_lambda_function.api_handler_js.function_name
-  function_version = aws_lambda_function.api_handler_js.version
+  function_name    = aws_lambda_function.api_handler.function_name
+  function_version = aws_lambda_function.api_handler.version
 }
 
-resource "aws_lambda_permission" "api_handler_invoke" {
-  statement_id  = "AllowAPIGatewayInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.api_handler_js.function_name
-  principal     = "apigateway.amazonaws.com"
-  # TODO
-  source_arn = "${var.rest_api_execution_arn}/*"
-}
+# TODO: For when API Gateway is completed
+# resource "aws_lambda_permission" "api_handler_invoke" {
+#   statement_id  = "AllowAPIGatewayInvoke"
+#   action        = "lambda:InvokeFunction"
+#   function_name = aws_lambda_function.api_handler.function_name
+#   principal     = "apigateway.amazonaws.com"
+#   # TODO
+#   source_arn = "${var.rest_api_execution_arn}/*"
+# }
 
-# Create a new IAM role for AI Proxy invocation
 resource "aws_iam_role" "ai_proxy_invoke_role" {
   name = "${var.deployment_name}-AIProxyInvokeRole"
   assume_role_policy = jsonencode({

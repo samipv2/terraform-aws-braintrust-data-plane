@@ -3,6 +3,7 @@
 import json
 import urllib.request
 import sys
+import os
 
 # This script is for hard coding the latest lambda versions to VERSIONS.json
 # as part of the release process for this terraform module
@@ -18,26 +19,31 @@ print(f"Fetching {version_tag} lambda versions...")
 
 lambdas = [
     "AIProxy",
-    "APIHandler", 
+    "APIHandler",
     "MigrateDatabaseFunction",
-    "QuarantineWarmupFunction"
+    "QuarantineWarmupFunction",
+    "CatchupETL",
 ]
 
-ecr_images = [
-    "braintrust/brainstore"
-]
+ecr_images = ["braintrust/brainstore"]
 
 base_url = "https://braintrust-assets-us-east-1.s3.us-east-1.amazonaws.com/lambda"
 
-versions = {}
+versions = {
+    "_tag": version_tag,
+}
 for lambda_name in lambdas:
     print(f"Fetching {version_tag} version for {lambda_name}...")
-    with urllib.request.urlopen(f"{base_url}/{lambda_name}/version-{version_tag}") as response:
-        version = response.read().decode('utf-8').strip()
+    with urllib.request.urlopen(
+        f"{base_url}/{lambda_name}/version-{version_tag}"
+    ) as response:
+        version = response.read().decode("utf-8").strip()
         versions[lambda_name] = version
 
 
-
 print("Writing versions to VERSIONS.json...")
-with open("modules/services/VERSIONS.json", "w") as f:
+script_dir = os.path.dirname(os.path.abspath(__file__))
+versions_path = os.path.join(script_dir, "modules", "services", "VERSIONS.json")
+
+with open(versions_path, "w") as f:
     json.dump(versions, f, indent=4)

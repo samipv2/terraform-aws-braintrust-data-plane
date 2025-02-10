@@ -115,6 +115,6 @@ resource "aws_secretsmanager_secret_version" "database_secret" {
 }
 
 resource "aws_secretsmanager_secret" "database_secret" {
-  name        = "${var.deployment_name}/DatabaseSecret"
+  name_prefix = "${var.deployment_name}/DatabaseSecret-"
   description = "Username/password for the main Braintrust RDS database"
 }
