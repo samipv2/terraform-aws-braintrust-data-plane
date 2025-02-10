@@ -143,3 +143,15 @@ variable "run_draft_migrations" {
   description = "Enable draft migrations for database schema updates"
   default     = false
 }
+
+variable "custom_domain" {
+  description = "Custom domain name for the CloudFront distribution"
+  type        = string
+  default     = null
+}
+
+variable "custom_certificate_arn" {
+  description = "ARN of the ACM certificate for the custom domain"
+  type        = string
+  default     = null
+}
