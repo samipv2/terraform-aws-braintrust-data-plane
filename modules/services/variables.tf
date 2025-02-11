@@ -155,3 +155,9 @@ variable "custom_certificate_arn" {
   type        = string
   default     = null
 }
+
+variable "kms_key_arn" {
+  description = "KMS key ARN to use for encrypting resources. If not provided, the default AWS managed key is used."
+  type        = string
+  default     = null
+}

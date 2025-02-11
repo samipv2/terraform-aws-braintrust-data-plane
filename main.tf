@@ -49,6 +49,8 @@ module "database" {
 
   postgres_storage_iops       = var.postgres_storage_iops
   postgres_storage_throughput = var.postgres_storage_throughput
+
+  kms_key_arn = var.kms_key_arn
 }
 
 module "redis" {
@@ -106,4 +108,5 @@ module "services" {
     module.quarantine_vpc[0].private_subnet_3_id
   ] : []
 
+  kms_key_arn = var.kms_key_arn
 }
