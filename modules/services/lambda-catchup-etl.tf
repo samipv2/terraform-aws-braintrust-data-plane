@@ -1,5 +1,9 @@
+locals {
+  catchup_etl_function_name = "${var.deployment_name}-CatchupETL"
+}
+
 resource "aws_lambda_function" "catchup_etl" {
-  function_name = "${var.deployment_name}-CatchupETL"
+  function_name = local.catchup_etl_function_name
   s3_bucket     = local.lambda_s3_bucket
   s3_key        = local.lambda_versions["CatchupETL"]
   role          = aws_iam_role.default_role.arn
@@ -8,6 +12,7 @@ resource "aws_lambda_function" "catchup_etl" {
   memory_size   = 1024
   timeout       = 900
   architectures = ["arm64"]
+  kms_key_arn   = var.kms_key_arn
 
   environment {
     variables = {
@@ -19,6 +24,11 @@ resource "aws_lambda_function" "catchup_etl" {
       BRAINSTORE_URL                 = local.brainstore_url
       BRAINSTORE_REALTIME_WAL_BUCKET = local.brainstore_s3_bucket
     }
+  }
+
+  logging_config {
+    log_format = "Text"
+    log_group  = "/braintrust/${var.deployment_name}/${local.catchup_etl_function_name}"
   }
 
   vpc_config {

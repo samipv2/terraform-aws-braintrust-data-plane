@@ -1,5 +1,9 @@
+locals {
+  migrate_database_function_name = "${var.deployment_name}-MigrateDatabaseFunction"
+}
+
 resource "aws_lambda_function" "migrate_database" {
-  function_name = "${var.deployment_name}-MigrateDatabaseFunction"
+  function_name = local.migrate_database_function_name
   s3_bucket     = local.lambda_s3_bucket
   s3_key        = local.lambda_versions["MigrateDatabaseFunction"]
   role          = aws_iam_role.default_role.arn
@@ -8,7 +12,12 @@ resource "aws_lambda_function" "migrate_database" {
   memory_size   = 1024
   timeout       = 900
   publish       = true
+  kms_key_arn   = var.kms_key_arn
 
+  logging_config {
+    log_format = "Text"
+    log_group  = "/braintrust/${var.deployment_name}/${local.migrate_database_function_name}"
+  }
   environment {
     variables = {
       BRAINTRUST_RUN_DRAFT_MIGRATIONS = var.run_draft_migrations

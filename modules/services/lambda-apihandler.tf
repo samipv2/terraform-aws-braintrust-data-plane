@@ -15,6 +15,7 @@ resource "aws_lambda_function" "api_handler" {
   timeout       = 600
   publish       = true
   architectures = ["arm64"]
+  kms_key_arn   = var.kms_key_arn
 
   logging_config {
     log_format = "Text"

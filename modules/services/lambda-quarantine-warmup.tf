@@ -1,7 +1,11 @@
+locals {
+  quarantine_warmup_function_name = "${var.deployment_name}-QuarantineWarmupFunction"
+}
+
 resource "aws_lambda_function" "quarantine_warmup" {
   count = var.use_quarantine_vpc ? 1 : 0
 
-  function_name = "${var.deployment_name}-QuarantineWarmupFunction"
+  function_name = local.quarantine_warmup_function_name
   s3_bucket     = local.lambda_s3_bucket
   s3_key        = local.lambda_versions["QuarantineWarmupFunction"]
   role          = aws_iam_role.api_handler_role.arn
@@ -9,6 +13,7 @@ resource "aws_lambda_function" "quarantine_warmup" {
   runtime       = "nodejs20.x"
   memory_size   = 1024
   timeout       = 900
+  kms_key_arn   = var.kms_key_arn
 
   environment {
     variables = {
@@ -27,6 +32,11 @@ resource "aws_lambda_function" "quarantine_warmup" {
       QUARANTINE_PUB_PRIVATE_VPC_DEFAULT_SECURITY_GROUP = var.use_quarantine_vpc ? var.quarantine_vpc_default_security_group_id : ""
       QUARANTINE_PUB_PRIVATE_VPC_ID                     = var.use_quarantine_vpc ? var.quarantine_vpc_id : ""
     }
+  }
+
+  logging_config {
+    log_format = "Text"
+    log_group  = "/braintrust/${var.deployment_name}/${local.quarantine_warmup_function_name}"
   }
 
   vpc_config {
