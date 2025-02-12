@@ -1,5 +1,8 @@
+locals {
+  ai_proxy_function_name = "${var.deployment_name}-AIProxy"
+}
 resource "aws_lambda_function" "ai_proxy" {
-  function_name = "${var.deployment_name}-AIProxy"
+  function_name = local.ai_proxy_function_name
   s3_bucket     = local.lambda_s3_bucket
   s3_key        = local.lambda_versions["AIProxy"]
   role          = aws_iam_role.api_handler_role.arn
@@ -8,6 +11,12 @@ resource "aws_lambda_function" "ai_proxy" {
   memory_size   = 1024
   timeout       = 900
   publish       = true
+  kms_key_arn   = var.kms_key_arn
+
+  logging_config {
+    log_format = "Text"
+    log_group  = "/braintrust/${var.deployment_name}/${local.ai_proxy_function_name}"
+  }
 
   ephemeral_storage {
     size = 1024
