@@ -28,7 +28,7 @@ variable "deployment_name" {
 }
 
 variable "kms_key_arn" {
-  description = "KMS key ARN to use for encrypting resources. If not provided, the default AWS managed key is used."
+  description = "Existing KMS key ARN to use for encrypting resources. If not provided, a new key will be created."
   type        = string
   default     = null
 }
