@@ -51,7 +51,7 @@ variable "database_security_group_ids" {
 }
 
 variable "kms_key_arn" {
-  description = "KMS key ARN to use for encrypting resources. If not provided, the default AWS managed key is used."
+  description = "KMS key ARN to use for encrypting resources. If not provided, the default AWS managed key is used. DO NOT change this after deployment. If you do, it will attempt to destroy your DB."
   type        = string
   default     = null
 }

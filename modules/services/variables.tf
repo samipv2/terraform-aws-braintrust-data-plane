@@ -157,7 +157,7 @@ variable "custom_certificate_arn" {
 }
 
 variable "kms_key_arn" {
-  description = "KMS key ARN to use for encrypting resources. If not provided, the default AWS managed key is used."
+  description = "KMS key ARN to use for encrypting resources. If not provided, the default AWS managed key is used. DO NOT change this after deployment. If you do, prior S3 objects will no longer be readable."
   type        = string
   default     = null
 }
