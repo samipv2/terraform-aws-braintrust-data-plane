@@ -1,4 +1,4 @@
-resource "aws_kms_key" "main" {
+resource "aws_kms_key" "braintrust" {
   description             = "KMS key for encrypting resources in the Braintrust data plane"
   key_usage               = "ENCRYPT_DECRYPT"
   deletion_window_in_days = 7
@@ -25,9 +25,9 @@ resource "aws_kms_key" "main" {
   }
 }
 
-resource "aws_kms_alias" "main" {
+resource "aws_kms_alias" "braintrust" {
   name          = "alias/braintrust/${var.deployment_name}"
-  target_key_id = aws_kms_key.main.key_id
+  target_key_id = aws_kms_key.braintrust.key_id
 }
 
 data "aws_caller_identity" "current" {}
