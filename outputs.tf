@@ -44,11 +44,16 @@ output "api_url" {
 }
 
 output "clickhouse_secret_arn" {
-  value       = module.clickhouse.clickhouse_secret_arn
+  value       = try(module.clickhouse[0].clickhouse_secret_arn, null)
   description = "ARN of the Clickhouse secret"
 }
 
 output "clickhouse_s3_bucket_name" {
-  value       = module.clickhouse.clickhouse_s3_bucket_name
+  value       = try(module.clickhouse[0].clickhouse_s3_bucket_name, null)
   description = "Name of the Clickhouse S3 bucket"
+}
+
+output "clickhouse_host" {
+  value       = try(module.clickhouse[0].clickhouse_instance_private_ip, null)
+  description = "Host of the Clickhouse instance"
 }
