@@ -36,7 +36,7 @@ variable "kms_key_arn" {
 ## NETWORKING
 variable "vpc_cidr" {
   type        = string
-  default     = "172.29.0.0/16"
+  default     = "10.175.0.0/16"
   description = "CIDR block for the VPC"
 }
 
@@ -72,7 +72,7 @@ variable "enable_quarantine_vpc" {
 
 variable "quarantine_vpc_cidr" {
   type        = string
-  default     = "172.30.0.0/16"
+  default     = "10.176.0.0/16"
   description = "CIDR block for the Quarantined VPC"
 }
 
