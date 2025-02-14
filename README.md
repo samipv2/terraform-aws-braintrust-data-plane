@@ -2,30 +2,12 @@
 
 This module is used to create the VPC, Databases, Lambdas, and associated resources for the self-hosted Braintrust data plane.
 
-**NOTE: This module is not yet ready for use. It is still under development.**
+**NOTE: This module is not yet ready for production use. It is still under development.**
 
 ## How to use this module
 
-To use this module, create a new Terraform directory and copy:
-* `providers.tf_example` to `providers.tf`
-* `terraform.tf_example` to `terraform.tf`
+To use this module, **copy the [`examples/braintrust-data-plane`](examples/braintrust-data-plane) directory to a new Terraform directory in your own repository**. Follow the instructions in the [`README.md`](examples/braintrust-data-plane/README.md) file in that directory to configure the module for your environment.
 
-Modifying their values as needed to match your environment.
-
-Then create a `main.tf` and add the following:
-
-```hcl
-module "braintrust" {
-  source = "github.com/braintrustdata/terraform-braintrust-data-plane"
-  # Optional parameters.
-  # These already have defaults, but feel free to override them:
-  #
-  # deployment_name = "braintrust"
-  # vpc_cidr = "172.29.0.0/16"
-  # enable_quarantine = true
-  # quarantine_vpc_cidr = "172.29.0.0/16"
-}
-```
 
 ## Customized Deployments
 
@@ -36,7 +18,7 @@ Look at our `main.tf` as a reference for how to configure the submodules. For ex
 
 ## Development Setup
 
-You only need to do these steps if you are making changes to this module.
+This section is only relevant if you are a contributor who wants to make changes to this module. All others can skip this section.
 
 1. Clone the repository
 2. Install [mise](https://mise.jdx.dev/about.html):
