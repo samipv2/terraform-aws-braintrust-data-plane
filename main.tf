@@ -89,10 +89,9 @@ module "services" {
   postgres_host     = module.database.postgres_database_address
   redis_host        = module.redis.redis_endpoint
   redis_port        = module.redis.redis_port
-  # TODO: Brainstore
-  # brainstore_hostname       = var.brainstore_hostname
-  # brainstore_port           = var.brainstore_port
-  # brainstore_s3_bucket_name = var.brainstore_s3_bucket_name
+
+  clickhouse_host       = try(module.clickhouse[0].clickhouse_instance_private_ip, null)
+  clickhouse_secret_arn = try(module.clickhouse[0].clickhouse_secret_arn, null)
 
   # Service configuration
   braintrust_org_name                 = var.braintrust_org_name

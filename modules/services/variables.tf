@@ -161,3 +161,15 @@ variable "kms_key_arn" {
   type        = string
   default     = null
 }
+
+variable "clickhouse_host" {
+  description = "The host of the clickhouse instance"
+  type        = string
+  default     = null
+}
+
+variable "clickhouse_secret_arn" {
+  description = "The ARN of the secret containing the clickhouse credentials"
+  type        = string
+  default     = null
+}
