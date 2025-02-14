@@ -5,12 +5,12 @@ variable "deployment_name" {
 
 variable "clickhouse_security_group_ids" {
   type        = list(string)
-  description = "The security group ids for the clickhouse cluster"
+  description = "The security group ids for the clickhouse instance"
 }
 
 variable "clickhouse_subnet_id" {
   type        = string
-  description = "The subnet id for the clickhouse cluster. Note this can only be one subnet/one AZ since the EBS volume is created in the same subnet and needs to be preserved and reattached if a new instance is created."
+  description = "The subnet id for the clickhouse instance. Note this can only be one subnet/one AZ since the EBS volume is created in the same subnet and needs to be preserved and reattached if a new instance is created."
 }
 
 variable "clickhouse_instance_count" {
@@ -25,7 +25,7 @@ variable "clickhouse_instance_count" {
 
 variable "clickhouse_instance_type" {
   type        = string
-  description = "The instance type for the clickhouse cluster"
+  description = "The instance type for the clickhouse instance"
   default     = "c5.2xlarge"
 }
 
@@ -37,13 +37,13 @@ variable "clickhouse_instance_key_pair_name" {
 
 variable "clickhouse_metadata_storage_size" {
   type        = number
-  description = "The size of the metadata storage for the clickhouse cluster"
+  description = "The size of the metadata storage for the clickhouse instance"
   default     = 100
 }
 
 variable "external_clickhouse_s3_bucket_name" {
   type        = string
-  description = "Don't use this unless instructed by Braintrust. If provided, the name of the existing S3 bucket to use for the clickhouse cluster. If not provided, a new bucket will be created."
+  description = "Don't use this unless instructed by Braintrust. If provided, the name of the existing S3 bucket to use for the clickhouse instance. If not provided, a new bucket will be created."
   default     = null
 }
 
