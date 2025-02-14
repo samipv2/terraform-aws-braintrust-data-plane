@@ -18,7 +18,7 @@ variable "clickhouse_instance_count" {
   description = "Do not change this unless instructed by Braintrust."
   default     = 1
   validation {
-    condition     = var.clickhouse_instance_count > 1
+    condition     = var.clickhouse_instance_count <= 1
     error_message = "More than 1 instance is not supported."
   }
 }
