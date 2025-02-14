@@ -121,3 +121,17 @@ module "services" {
 
   kms_key_arn = local.kms_key_arn
 }
+
+module "clickhouse" {
+  source = "./modules/clickhouse"
+  count  = var.enable_clickhouse ? 1 : 0
+
+  deployment_name                  = var.deployment_name
+  clickhouse_instance_count        = var.use_external_clickhouse_address ? 0 : 1
+  clickhouse_instance_type         = var.clickhouse_instance_type
+  clickhouse_metadata_storage_size = var.clickhouse_metadata_storage_size
+  clickhouse_subnet_id             = module.main_vpc.private_subnet_1_id
+  clickhouse_security_group_ids    = [module.main_vpc.default_security_group_id]
+
+  kms_key_arn = local.kms_key_arn
+}

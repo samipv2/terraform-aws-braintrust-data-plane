@@ -176,3 +176,28 @@ variable "outbound_rate_limit_window_minutes" {
   type        = number
   default     = 1
 }
+
+## Clickhouse
+variable "enable_clickhouse" {
+  type        = bool
+  description = "Enable Clickhouse for faster analytics"
+  default     = false
+}
+
+variable "use_external_clickhouse_address" {
+  type        = bool
+  description = "Do not change this unless instructed by Braintrust. If true, the domain name or IP of the external Clickhouse instance will be used and no internal instance will be created."
+  default     = false
+}
+
+variable "clickhouse_metadata_storage_size" {
+  type        = number
+  description = "The size of the EBS volume to use for Clickhouse metadata"
+  default     = 100
+}
+
+variable "clickhouse_instance_type" {
+  type        = string
+  description = "The instance type to use for the Clickhouse instance"
+  default     = "c5.2xlarge"
+}
