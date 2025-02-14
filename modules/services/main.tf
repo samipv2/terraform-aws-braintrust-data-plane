@@ -10,8 +10,8 @@ locals {
   brainstore_url           = var.brainstore_enabled ? "http://${var.brainstore_hostname}:${var.brainstore_port}" : ""
   brainstore_s3_bucket     = var.brainstore_enabled ? var.brainstore_s3_bucket_name : ""
   clickhouse_secret_string = data.aws_secretsmanager_secret_version.clickhouse_secret.secret_string
-  clickhouse_pg_url        = var.clickhouse_host ? "postgres://default:${local.clickhouse_secret_string}@${var.clickhouse_host}:9005/default" : ""
-  clickhouse_connect_url   = var.clickhouse_host ? "http://default:${local.clickhouse_secret_string}@${var.clickhouse_host}:8123/default" : ""
+  clickhouse_pg_url        = var.clickhouse_host != null ? "postgres://default:${local.clickhouse_secret_string}@${var.clickhouse_host}:9005/default" : ""
+  clickhouse_connect_url   = var.clickhouse_host != null ? "http://default:${local.clickhouse_secret_string}@${var.clickhouse_host}:8123/default" : ""
 }
 
 data "aws_secretsmanager_secret_version" "clickhouse_secret" {
