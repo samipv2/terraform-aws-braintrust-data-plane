@@ -28,7 +28,7 @@ module "main_vpc" {
 
 module "quarantine_vpc" {
   source = "./modules/vpc"
-  count  = var.enable_quarantine ? 1 : 0
+  count  = var.enable_quarantine_vpc ? 1 : 0
 
   deployment_name = var.deployment_name
   vpc_name        = "quarantine"
@@ -110,10 +110,10 @@ module "services" {
   ]
 
   # Quarantine VPC
-  use_quarantine_vpc                       = var.enable_quarantine
-  quarantine_vpc_id                        = var.enable_quarantine ? module.quarantine_vpc[0].vpc_id : null
-  quarantine_vpc_default_security_group_id = var.enable_quarantine ? module.quarantine_vpc[0].default_security_group_id : null
-  quarantine_vpc_private_subnets = var.enable_quarantine ? [
+  use_quarantine_vpc                       = var.enable_quarantine_vpc
+  quarantine_vpc_id                        = var.enable_quarantine_vpc ? module.quarantine_vpc[0].vpc_id : null
+  quarantine_vpc_default_security_group_id = var.enable_quarantine_vpc ? module.quarantine_vpc[0].default_security_group_id : null
+  quarantine_vpc_private_subnets = var.enable_quarantine_vpc ? [
     module.quarantine_vpc[0].private_subnet_1_id,
     module.quarantine_vpc[0].private_subnet_2_id,
     module.quarantine_vpc[0].private_subnet_3_id
