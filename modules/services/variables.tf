@@ -47,7 +47,7 @@ variable "redis_port" {
 variable "use_quarantine_vpc" {
   type        = bool
   description = "Whether to use a quarantine VPC to allow running of user defined functions"
-  default     = false
+  default     = true
 }
 
 variable "quarantine_vpc_id" {

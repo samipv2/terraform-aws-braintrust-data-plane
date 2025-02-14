@@ -38,6 +38,16 @@ resource "aws_db_instance" "main" {
   performance_insights_retention_period = 7
 
   kms_key_id = var.kms_key_arn
+
+  lifecycle {
+    # These can't be changed without recreating the RDS instance
+    ignore_changes = [
+      identifier,
+      kms_key_id,
+      storage_encrypted,
+      db_subnet_group_name
+    ]
+  }
 }
 
 resource "aws_db_parameter_group" "main" {

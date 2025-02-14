@@ -36,7 +36,7 @@ variable "kms_key_arn" {
 ## NETWORKING
 variable "vpc_cidr" {
   type        = string
-  default     = "172.29.0.0/16"
+  default     = "10.175.0.0/16"
   description = "CIDR block for the VPC"
 }
 
@@ -64,15 +64,15 @@ variable "public_subnet_1_az" {
   description = "Availability zone for the public subnet. Leave blank to choose the first available zone"
 }
 
-variable "enable_quarantine" {
+variable "enable_quarantine_vpc" {
   type        = bool
-  description = "Enable optional Quarantine VPC. If enabled, user defined functions run inside of this VPC."
-  default     = false
+  description = "Enable the Quarantine VPC to run user defined functions in an isolated environment. If disabled, user defined functions will not be available."
+  default     = true
 }
 
 variable "quarantine_vpc_cidr" {
   type        = string
-  default     = "172.30.0.0/16"
+  default     = "10.176.0.0/16"
   description = "CIDR block for the Quarantined VPC"
 }
 
