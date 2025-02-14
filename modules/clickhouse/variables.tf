@@ -26,17 +26,19 @@ variable "clickhouse_instance_count" {
 variable "clickhouse_instance_type" {
   type        = string
   description = "The instance type for the clickhouse cluster"
+  default     = "c5.2xlarge"
 }
 
 variable "clickhouse_instance_key_pair_name" {
   type        = string
-  description = "The key pair name for the clickhouse cluster"
+  description = "The SSH key pair name for the clickhouse instance. "
   default     = null
 }
 
 variable "clickhouse_metadata_storage_size" {
   type        = number
   description = "The size of the metadata storage for the clickhouse cluster"
+  default     = 100
 }
 
 variable "external_clickhouse_s3_bucket_name" {
