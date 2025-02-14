@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "clickhouse_s3_bucket" {
   count         = var.external_clickhouse_s3_bucket_name == null ? 1 : 0
-  bucket_prefix = "${var.deployment_name}-clickhouse-s3-bucket-"
+  bucket_prefix = "${var.deployment_name}-clickhouse"
 
   lifecycle {
     # S3 does not support renaming buckets
