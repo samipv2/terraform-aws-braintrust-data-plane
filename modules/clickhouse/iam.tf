@@ -40,8 +40,8 @@ resource "aws_iam_role_policy" "clickhouse_s3_access" {
       Effect = "Allow"
       Action = "s3:*"
       Resource = [
-        "arn:aws:s3:::${aws_s3_bucket.clickhouse_s3_bucket.id}",
-        "arn:aws:s3:::${aws_s3_bucket.clickhouse_s3_bucket.id}/*"
+        "arn:aws:s3:::${local.clickhouse_bucket_name}",
+        "arn:aws:s3:::${local.clickhouse_bucket_name}/*"
       ]
     }]
   })

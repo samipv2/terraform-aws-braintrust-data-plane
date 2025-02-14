@@ -1,3 +1,7 @@
+locals {
+  clickhouse_bucket_name = var.external_clickhouse_s3_bucket_name == null ? aws_s3_bucket.clickhouse_s3_bucket[0].id : var.external_clickhouse_s3_bucket_name
+}
+
 data "aws_region" "current" {}
 
 data "aws_ami" "amazon_linux_2" {
@@ -51,8 +55,8 @@ resource "aws_launch_template" "clickhouse" {
 
   user_data = base64encode(templatefile("${path.module}/user_data.sh", {
     aws_region           = data.aws_region.current.name
-    s3_bucket_name       = try(aws_s3_bucket.clickhouse_s3_bucket[0].id, var.external_clickhouse_s3_bucket_name)
-    clickhouse_secret_id = aws_secretsmanager_secret.clickhouse.id
+    s3_bucket_name       = local.clickhouse_bucket_name
+    clickhouse_secret_id = aws_secretsmanager_secret.clickhouse_secret.id
   }))
 
   tag_specifications {
