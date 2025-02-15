@@ -1,5 +1,6 @@
 resource "aws_secretsmanager_secret" "clickhouse_secret" {
-  name = "${var.deployment_name}-clickhouse-secret"
+  name       = "${var.deployment_name}-clickhouse-secret"
+  kms_key_id = var.kms_key_arn
 }
 
 data "aws_secretsmanager_random_password" "clickhouse_secret" {
