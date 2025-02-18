@@ -99,6 +99,8 @@ module "services" {
   whitelisted_origins                 = var.whitelisted_origins
   outbound_rate_limit_window_minutes  = var.outbound_rate_limit_window_minutes
   outbound_rate_limit_max_requests    = var.outbound_rate_limit_max_requests
+  custom_domain                       = var.custom_domain
+  custom_certificate_arn              = var.custom_certificate_arn
 
   # Networking
   service_security_group_ids = [module.main_vpc.default_security_group_id]

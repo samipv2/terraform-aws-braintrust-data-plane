@@ -177,6 +177,18 @@ variable "outbound_rate_limit_window_minutes" {
   default     = 1
 }
 
+variable "custom_domain" {
+  description = "Custom domain name for the CloudFront distribution"
+  type        = string
+  default     = null
+}
+
+variable "custom_certificate_arn" {
+  description = "ARN of the ACM certificate for the custom domain"
+  type        = string
+  default     = null
+}
+
 ## Clickhouse
 variable "enable_clickhouse" {
   type        = bool
