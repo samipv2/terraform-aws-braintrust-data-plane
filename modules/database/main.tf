@@ -28,7 +28,7 @@ resource "aws_db_instance" "main" {
   monitoring_role_arn = aws_iam_role.db_monitoring.arn
 
   skip_final_snapshot       = false
-  final_snapshot_identifier = "${var.deployment_name}-main-final-snapshot"
+  final_snapshot_identifier = "${var.deployment_name}-main-final-snapshot-${random_id.snapshot_suffix.hex}"
   copy_tags_to_snapshot     = true
   backup_retention_period   = 3
   backup_window             = "00:00-00:30"
@@ -48,6 +48,10 @@ resource "aws_db_instance" "main" {
       db_subnet_group_name
     ]
   }
+}
+
+resource "random_id" "snapshot_suffix" {
+  byte_length = 4
 }
 
 resource "aws_db_parameter_group" "main" {
