@@ -58,11 +58,9 @@ resource "aws_iam_role" "quarantine_function_role" {
   })
 }
 
-resource "aws_iam_role_policy_attachments_exclusive" "quarantine_function_role" {
-  role_name = aws_iam_role.quarantine_function_role.name
-  policy_arns = [
-    "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
-  ]
+resource "aws_iam_role_policy_attachment" "quarantine_function_role" {
+  role       = aws_iam_role.quarantine_function_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
 # The role used by the API handler and AI proxy
@@ -82,15 +80,20 @@ resource "aws_iam_role" "api_handler_role" {
   })
 }
 
-resource "aws_iam_role_policy_attachments_exclusive" "api_handler_exclusive" {
-  role_name = aws_iam_role.api_handler_role.name
-  policy_arns = concat(
-    [
-      "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole",
-      aws_iam_policy.api_handler_policy.arn,
-    ],
-    try([aws_iam_policy.api_handler_quarantine[0].arn], [])
-  )
+resource "aws_iam_role_policy_attachment" "vpc_access" {
+  role       = aws_iam_role.api_handler_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+
+resource "aws_iam_role_policy_attachment" "api_handler_policy" {
+  role       = aws_iam_role.api_handler_role.name
+  policy_arn = aws_iam_policy.api_handler_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "api_handler_quarantine" {
+  count      = var.use_quarantine_vpc ? 1 : 0
+  role       = aws_iam_role.api_handler_role.name
+  policy_arn = aws_iam_policy.api_handler_quarantine[0].arn
 }
 
 resource "aws_iam_policy" "api_handler_quarantine" {

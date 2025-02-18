@@ -23,6 +23,8 @@ resource "aws_lambda_function" "catchup_etl" {
       BRAINSTORE_ENABLED             = var.brainstore_enabled
       BRAINSTORE_URL                 = local.brainstore_url
       BRAINSTORE_REALTIME_WAL_BUCKET = local.brainstore_s3_bucket
+      CLICKHOUSE_PG_URL              = local.clickhouse_pg_url
+      CLICKHOUSE_CONNECT_URL         = local.clickhouse_connect_url
     }
   }
 

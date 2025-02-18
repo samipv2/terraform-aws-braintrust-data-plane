@@ -10,8 +10,8 @@ crash.log
 crash.*.log
 
 # Exclude all .tfvars files, which are likely to contain sensitive data, such as
-# password, private keys, and other secrets. These should not be part of version 
-# control as they are data points which are potentially sensitive and subject 
+# password, private keys, and other secrets. These should not be part of version
+# control as they are data points which are potentially sensitive and subject
 # to change depending on the environment.
 *.tfvars
 *.tfvars.json
@@ -36,10 +36,12 @@ override.tf.json
 .terraformrc
 terraform.rc
 
-# Do not commit the terraform.tf and provider.tf files. This module should not have concrete 
+# Do not commit the terraform.tf and provider.tf files. This module should not have concrete
 # backend or provider configs. Users will set that up themselves.
-terraform.tf
-provider.tf
+/terraform.tf
+/provider.tf
+/modules/*/terraform.tf
+/modules/*/provider.tf
 
 # Ignore the braintrust-sandbox directory as it is used for internal testing
 braintrust-sandbox/*

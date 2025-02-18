@@ -64,6 +64,9 @@ resource "aws_lambda_function" "api_handler" {
       BRAINSTORE_ENABLED             = var.brainstore_enabled
       BRAINSTORE_URL                 = local.brainstore_url
       BRAINSTORE_REALTIME_WAL_BUCKET = local.brainstore_s3_bucket
+
+      CLICKHOUSE_PG_URL      = local.clickhouse_pg_url
+      CLICKHOUSE_CONNECT_URL = local.clickhouse_connect_url
     }
   }
 
@@ -89,16 +92,6 @@ resource "aws_lambda_alias" "api_handler_live" {
   function_name    = aws_lambda_function.api_handler.function_name
   function_version = aws_lambda_function.api_handler.version
 }
-
-# TODO: For when API Gateway is completed
-# resource "aws_lambda_permission" "api_handler_invoke" {
-#   statement_id  = "AllowAPIGatewayInvoke"
-#   action        = "lambda:InvokeFunction"
-#   function_name = aws_lambda_function.api_handler.function_name
-#   principal     = "apigateway.amazonaws.com"
-#   # TODO
-#   source_arn = "${var.rest_api_execution_arn}/*"
-# }
 
 resource "aws_iam_role" "ai_proxy_invoke_role" {
   name = "${var.deployment_name}-AIProxyInvokeRole"

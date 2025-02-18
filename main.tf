@@ -89,10 +89,9 @@ module "services" {
   postgres_host     = module.database.postgres_database_address
   redis_host        = module.redis.redis_endpoint
   redis_port        = module.redis.redis_port
-  # TODO: Brainstore
-  # brainstore_hostname       = var.brainstore_hostname
-  # brainstore_port           = var.brainstore_port
-  # brainstore_s3_bucket_name = var.brainstore_s3_bucket_name
+
+  clickhouse_host      = try(module.clickhouse[0].clickhouse_instance_private_ip, null)
+  clickhouse_secret_id = try(module.clickhouse[0].clickhouse_secret_id, null)
 
   # Service configuration
   braintrust_org_name                 = var.braintrust_org_name
@@ -100,6 +99,8 @@ module "services" {
   whitelisted_origins                 = var.whitelisted_origins
   outbound_rate_limit_window_minutes  = var.outbound_rate_limit_window_minutes
   outbound_rate_limit_max_requests    = var.outbound_rate_limit_max_requests
+  custom_domain                       = var.custom_domain
+  custom_certificate_arn              = var.custom_certificate_arn
 
   # Networking
   service_security_group_ids = [module.main_vpc.default_security_group_id]
@@ -118,6 +119,20 @@ module "services" {
     module.quarantine_vpc[0].private_subnet_2_id,
     module.quarantine_vpc[0].private_subnet_3_id
   ] : []
+
+  kms_key_arn = local.kms_key_arn
+}
+
+module "clickhouse" {
+  source = "./modules/clickhouse"
+  count  = var.enable_clickhouse ? 1 : 0
+
+  deployment_name                  = var.deployment_name
+  clickhouse_instance_count        = var.use_external_clickhouse_address ? 0 : 1
+  clickhouse_instance_type         = var.clickhouse_instance_type
+  clickhouse_metadata_storage_size = var.clickhouse_metadata_storage_size
+  clickhouse_subnet_id             = module.main_vpc.private_subnet_1_id
+  clickhouse_security_group_ids    = [module.main_vpc.default_security_group_id]
 
   kms_key_arn = local.kms_key_arn
 }

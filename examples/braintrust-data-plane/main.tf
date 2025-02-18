@@ -52,6 +52,12 @@ module "braintrust-data-plane" {
   # List of origins to whitelist for CORS
   # whitelisted_origins                   = []
 
+  # Custom domain name for the CloudFront distribution
+  # custom_domain                       = null
+
+  # ARN of the ACM certificate for the custom domain
+  # custom_certificate_arn              = null
+
   # The maximum number of requests per user allowed in the time frame specified by outbound_rate_limit_window_minutes. Setting to 0 will disable rate limits
   # outbound_rate_limit_max_requests      = 0
 
