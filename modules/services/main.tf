@@ -9,13 +9,17 @@ locals {
   postgres_url             = "postgres://${var.postgres_username}:${var.postgres_password}@${var.postgres_host}/postgres"
   brainstore_url           = var.brainstore_enabled ? "http://${var.brainstore_hostname}:${var.brainstore_port}" : ""
   brainstore_s3_bucket     = var.brainstore_enabled ? var.brainstore_s3_bucket_name : ""
-  clickhouse_secret_string = data.aws_secretsmanager_secret_version.clickhouse_secret.secret_string
+  clickhouse_secret_string = var.clickhouse_secret_id != null ? data.aws_secretsmanager_secret_version.clickhouse_secret[0].secret_string : ""
   clickhouse_pg_url        = var.clickhouse_host != null ? "postgres://default:${local.clickhouse_secret_string}@${var.clickhouse_host}:9005/default" : ""
   clickhouse_connect_url   = var.clickhouse_host != null ? "http://default:${local.clickhouse_secret_string}@${var.clickhouse_host}:8123/default" : ""
 }
 
 data "aws_secretsmanager_secret_version" "clickhouse_secret" {
-  secret_id = var.clickhouse_secret_arn
+  count = var.clickhouse_secret_id != null ? 1 : 0
+  # The secret ID is a pipe delimited combination of secret ID and version ID
+  # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version#attribute-reference
+  secret_id  = split("|", var.clickhouse_secret_id)[0]
+  version_id = split("|", var.clickhouse_secret_id)[1]
 }
 
 data "aws_region" "current" {

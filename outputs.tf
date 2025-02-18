@@ -43,9 +43,9 @@ output "api_url" {
   description = "The primary endpoint for the dataplane API. This is the value that should be entered into the braintrust dashboard under API URL."
 }
 
-output "clickhouse_secret_arn" {
-  value       = try(module.clickhouse[0].clickhouse_secret_arn, null)
-  description = "ARN of the Clickhouse secret"
+output "clickhouse_secret_id" {
+  value       = try(module.clickhouse[0].clickhouse_secret_id, null)
+  description = "ID of the Clickhouse secret. Note this is the Terraform ID attribute which is a pipe delimited combination of secret ID and version ID"
 }
 
 output "clickhouse_s3_bucket_name" {

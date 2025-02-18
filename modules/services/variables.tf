@@ -168,8 +168,16 @@ variable "clickhouse_host" {
   default     = null
 }
 
-variable "clickhouse_secret_arn" {
-  description = "The ARN of the secret containing the clickhouse credentials"
+variable "clickhouse_secret_id" {
+  description = "The ID of the secret containing the clickhouse credentials. Note this is the Terraform `id` attribute which is a pipe delimited combination of secret ID and version ID"
   type        = string
   default     = null
+  validation {
+    condition     = var.clickhouse_secret_id != null ? can(regex("^arn.*\\|", var.clickhouse_secret_id)) : true
+    error_message = "Invalid secret ID format. Secret ID must be an arn and contain a pipe ('|') delimiter for the secret version id"
+  }
+  validation {
+    condition     = var.clickhouse_secret_id != null ? var.clickhouse_host != null : true
+    error_message = "clickhouse_host must be provided when clickhouse_secret_id is set"
+  }
 }

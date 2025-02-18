@@ -25,7 +25,7 @@ echo "export S3_BUCKET_NAME=${s3_bucket_name}" >> /etc/environment
 # shellcheck disable=SC2154
 export AWS_DEFAULT_REGION=${aws_region}
 # shellcheck disable=SC2154,SC2155
-export CLICKHOUSE_PASSWORD=$(aws secretsmanager get-secret-value --secret-id "${clickhouse_secret_id}" --query SecretString --output text)
+export CLICKHOUSE_PASSWORD=$(aws secretsmanager get-secret-value --secret-id "${clickhouse_secret_id}" --version-id "${clickhouse_secret_version_id}" --query SecretString --output text)
 echo "$CLICKHOUSE_PASSWORD" > /tmp/password
 
 # Install dependencies and Clickhouse

@@ -90,8 +90,8 @@ module "services" {
   redis_host        = module.redis.redis_endpoint
   redis_port        = module.redis.redis_port
 
-  clickhouse_host       = try(module.clickhouse[0].clickhouse_instance_private_ip, null)
-  clickhouse_secret_arn = try(module.clickhouse[0].clickhouse_secret_arn, null)
+  clickhouse_host      = try(module.clickhouse[0].clickhouse_instance_private_ip, null)
+  clickhouse_secret_id = try(module.clickhouse[0].clickhouse_secret_id, null)
 
   # Service configuration
   braintrust_org_name                 = var.braintrust_org_name
