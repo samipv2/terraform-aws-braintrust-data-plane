@@ -8,6 +8,11 @@ output "quarantine_vpc_id" {
   description = "ID of the quarantine VPC that user functions run inside of."
 }
 
+output "main_vpc_cidr" {
+  value       = module.main_vpc.vpc_cidr
+  description = "CIDR block of the main VPC"
+}
+
 output "main_vpc_public_subnet_1_id" {
   value       = module.main_vpc.public_subnet_1_id
   description = "ID of the public subnet in the main VPC"
