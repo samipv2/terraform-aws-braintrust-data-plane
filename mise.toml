@@ -4,6 +4,10 @@ pre-commit = "latest"
 terraform = "1.10"
 
 [tasks]
+lint = ["terraform fmt -recursive", "tflint --recursive"]
 setup = ["pre-commit install", "tflint --init"]
-lint = ["terraform fmt", "tflint", "tflint --chdir modules --recursive"]
+validate = [
+    "terraform init && terraform validate",
+    "cd examples/braintrust-data-plane && terraform init && terraform validate",
+]
 precommit = ["pre-commit run --all-files"]
