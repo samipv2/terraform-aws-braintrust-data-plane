@@ -7,6 +7,9 @@ module "kms" {
 
 locals {
   kms_key_arn = var.kms_key_arn != null ? var.kms_key_arn : module.kms[0].key_arn
+  clickhouse_address = var.use_external_clickhouse_address != null ? var.use_external_clickhouse_address : (
+    var.enable_clickhouse ? module.clickhouse[0].clickhouse_instance_private_ip : null
+  )
 }
 
 module "main_vpc" {
@@ -90,7 +93,7 @@ module "services" {
   redis_host        = module.redis.redis_endpoint
   redis_port        = module.redis.redis_port
 
-  clickhouse_host      = try(module.clickhouse[0].clickhouse_instance_private_ip, null)
+  clickhouse_host      = local.clickhouse_address
   clickhouse_secret_id = try(module.clickhouse[0].clickhouse_secret_id, null)
 
   # Service configuration
