@@ -18,15 +18,15 @@ data "aws_subnet" "clickhouse_subnet" {
   id = var.clickhouse_subnet_id
 }
 
-resource "aws_launch_template" "clickhouse" {
-  count         = var.clickhouse_instance_count
-  name          = "${var.deployment_name}-clickhouse"
-  image_id      = data.aws_ami.amazon_linux_2.id
-  instance_type = var.clickhouse_instance_type
+resource "aws_instance" "clickhouse" {
+  count                = var.clickhouse_instance_count
+  ami                  = data.aws_ami.amazon_linux_2.id
+  instance_type        = var.clickhouse_instance_type
+  subnet_id            = var.clickhouse_subnet_id
+  key_name             = var.clickhouse_instance_key_pair_name
+  iam_instance_profile = aws_iam_instance_profile.clickhouse.name
 
-  iam_instance_profile {
-    name = aws_iam_instance_profile.clickhouse.name
-  }
+  vpc_security_group_ids = var.clickhouse_security_group_ids
 
   metadata_options {
     http_endpoint               = "enabled"
@@ -34,24 +34,16 @@ resource "aws_launch_template" "clickhouse" {
     http_put_response_hop_limit = 1
   }
 
-  network_interfaces {
+  root_block_device {
+    volume_size           = 128
+    volume_type           = "gp3"
+    encrypted             = true
+    kms_key_id            = var.kms_key_arn
     delete_on_termination = true
-    security_groups       = var.clickhouse_security_group_ids
-    subnet_id             = var.clickhouse_subnet_id
-  }
-
-  block_device_mappings {
-    device_name = "/dev/xvda"
-    ebs {
-      volume_size           = 128
-      volume_type           = "gp3"
-      encrypted             = true
-      kms_key_id            = var.kms_key_arn
-      delete_on_termination = true
+    tags = {
+      Name = "${var.deployment_name}-clickhouse-root"
     }
   }
-
-  key_name = var.clickhouse_instance_key_pair_name
 
   user_data = base64encode(templatefile("${path.module}/user_data.sh", {
     aws_region                   = data.aws_region.current.name
@@ -60,33 +52,8 @@ resource "aws_launch_template" "clickhouse" {
     clickhouse_secret_version_id = aws_secretsmanager_secret_version.clickhouse_secret.version_id
   }))
 
-  tag_specifications {
-    resource_type = "instance"
-    tags = {
-      Name = "${var.deployment_name}-clickhouse"
-    }
-  }
-
-  tag_specifications {
-    resource_type = "volume"
-    tags = {
-      Name = "${var.deployment_name}-clickhouse"
-    }
-  }
-
-  tag_specifications {
-    resource_type = "network-interface"
-    tags = {
-      Name = "${var.deployment_name}-clickhouse"
-    }
-  }
-}
-
-resource "aws_instance" "clickhouse" {
-  count = var.clickhouse_instance_count
-  launch_template {
-    id      = aws_launch_template.clickhouse[0].id
-    version = "$Latest"
+  tags = {
+    Name = "${var.deployment_name}-clickhouse"
   }
 }
 
