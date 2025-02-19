@@ -197,9 +197,9 @@ variable "enable_clickhouse" {
 }
 
 variable "use_external_clickhouse_address" {
-  type        = bool
-  description = "Do not change this unless instructed by Braintrust. If true, the domain name or IP of the external Clickhouse instance will be used and no internal instance will be created."
-  default     = false
+  type        = string
+  description = "Do not change this unless instructed by Braintrust. If set, the domain name or IP of the external Clickhouse instance will be used and no internal instance will be created."
+  default     = null
 }
 
 variable "clickhouse_metadata_storage_size" {

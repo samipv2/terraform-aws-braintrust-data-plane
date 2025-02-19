@@ -128,7 +128,7 @@ module "clickhouse" {
   count  = var.enable_clickhouse ? 1 : 0
 
   deployment_name                  = var.deployment_name
-  clickhouse_instance_count        = var.use_external_clickhouse_address ? 0 : 1
+  clickhouse_instance_count        = var.use_external_clickhouse_address != null ? 0 : 1
   clickhouse_instance_type         = var.clickhouse_instance_type
   clickhouse_metadata_storage_size = var.clickhouse_metadata_storage_size
   clickhouse_subnet_id             = module.main_vpc.private_subnet_1_id
