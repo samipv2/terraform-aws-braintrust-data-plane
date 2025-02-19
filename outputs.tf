@@ -28,6 +28,16 @@ output "main_vpc_private_subnet_3_id" {
   description = "ID of the third private subnet in the main VPC"
 }
 
+output "main_vpc_public_route_table_id" {
+  value       = module.main_vpc.public_route_table_id
+  description = "ID of the public route table in the main VPC"
+}
+
+output "main_vpc_private_route_table_id" {
+  value       = module.main_vpc.private_route_table_id
+  description = "ID of the private route table in the main VPC"
+}
+
 output "postgres_database_arn" {
   value       = module.database.postgres_database_arn
   description = "ARN of the main Braintrust Postgres database"
