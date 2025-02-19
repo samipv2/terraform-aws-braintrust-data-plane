@@ -1,8 +1,11 @@
+# tflint-ignore-file: terraform_module_version
+
 # Create an instance of the Braintrust data plane.
+
 module "braintrust-data-plane" {
   source = "braintrustdata/data-plane/braintrust"
-  # Comment out this line to always use the latest version of the module.
-  version = "1.0.0"
+  # Uncomment the version line to lock to a specific version of the module.
+  # version = "1.1.0"
 
   deployment_name     = local.deployment_name
   braintrust_org_name = "" # Add your organization name from the Braintrust UI here
