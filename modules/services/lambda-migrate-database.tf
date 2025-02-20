@@ -22,6 +22,7 @@ resource "aws_lambda_function" "migrate_database" {
     variables = {
       BRAINTRUST_RUN_DRAFT_MIGRATIONS = var.run_draft_migrations
       PG_URL                          = local.postgres_url
+      CLICKHOUSE_CONNECT_URL          = local.clickhouse_connect_url
     }
   }
 
