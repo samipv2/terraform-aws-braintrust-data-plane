@@ -42,7 +42,7 @@ variable "additional_kms_key_policies" {
   type        = list(any)
   default     = []
   validation {
-    condition     = var.kms_key_arn == null
+    condition     = length(var.additional_kms_key_policies) == 0 || var.kms_key_arn == null
     error_message = "additional_kms_key_policies can only be used if kms_key_arn is not provided."
   }
 }
