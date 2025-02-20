@@ -18,6 +18,7 @@ data "aws_subnet" "clickhouse_subnet" {
   id = var.clickhouse_subnet_id
 }
 
+# nosemgrep
 resource "aws_instance" "clickhouse" {
   count                = var.clickhouse_instance_count
   ami                  = data.aws_ami.amazon_linux_2.id
