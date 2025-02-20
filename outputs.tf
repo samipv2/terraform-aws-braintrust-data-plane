@@ -8,6 +8,11 @@ output "quarantine_vpc_id" {
   description = "ID of the quarantine VPC that user functions run inside of."
 }
 
+output "main_vpc_cidr" {
+  value       = module.main_vpc.vpc_cidr
+  description = "CIDR block of the main VPC"
+}
+
 output "main_vpc_public_subnet_1_id" {
   value       = module.main_vpc.public_subnet_1_id
   description = "ID of the public subnet in the main VPC"
@@ -26,6 +31,16 @@ output "main_vpc_private_subnet_2_id" {
 output "main_vpc_private_subnet_3_id" {
   value       = module.main_vpc.private_subnet_3_id
   description = "ID of the third private subnet in the main VPC"
+}
+
+output "main_vpc_public_route_table_id" {
+  value       = module.main_vpc.public_route_table_id
+  description = "ID of the public route table in the main VPC"
+}
+
+output "main_vpc_private_route_table_id" {
+  value       = module.main_vpc.private_route_table_id
+  description = "ID of the private route table in the main VPC"
 }
 
 output "postgres_database_arn" {
