@@ -95,7 +95,7 @@ module "services" {
   redis_port        = module.redis.redis_port
 
   clickhouse_host      = local.clickhouse_address
-  clickhouse_secret_id = try(module.clickhouse[0].clickhouse_secret_id, null)
+  clickhouse_secret_id = var.enable_clickhouse ? module.clickhouse[0].clickhouse_secret_id : null
 
   # Service configuration
   braintrust_org_name                 = var.braintrust_org_name
