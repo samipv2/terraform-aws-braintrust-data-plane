@@ -37,6 +37,16 @@ variable "kms_key_arn" {
   default     = null
 }
 
+variable "additional_kms_key_policies" {
+  description = "Additional IAM policy statements to append to the generated KMS key."
+  type        = list(any)
+  default     = []
+  validation {
+    condition     = var.kms_key_arn == null
+    error_message = "additional_kms_key_policies can only be used if kms_key_arn is not provided."
+  }
+}
+
 ## NETWORKING
 variable "vpc_cidr" {
   type        = string
