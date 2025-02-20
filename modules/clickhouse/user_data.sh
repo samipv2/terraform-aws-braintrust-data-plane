@@ -33,11 +33,8 @@ yum install -y yum-utils jq
 yum-config-manager --add-repo https://packages.clickhouse.com/rpm/clickhouse.repo
 yum install -y clickhouse-server clickhouse-client
 
-# Extract password from secret
-PASSWORD=$(echo "$CLICKHOUSE_PASSWORD" | jq .password --raw-output | tr -d '\n')
-
 # Escape password for sed
-ESCAPED_PASSWORD=$(printf '%s\n' "$PASSWORD" | sed -e 's/[]\/$*.^[]/\\&/g')
+ESCAPED_PASSWORD=$(printf '%s\n' "$CLICKHOUSE_PASSWORD" | sed -e 's/[]\/$*.^[]/\\&/g')
 
 # Configure Clickhouse user password
 sed -i "s|<password></password>|<password>$ESCAPED_PASSWORD</password>|" /etc/clickhouse-server/users.xml
