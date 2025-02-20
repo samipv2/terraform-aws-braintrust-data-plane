@@ -1,8 +1,8 @@
 data "aws_region" "current" {}
 
 resource "aws_vpc" "vpc" {
-  cidr_block = var.vpc_cidr
-
+  cidr_block           = var.vpc_cidr
+  enable_dns_hostnames = true
   tags = {
     Name = "${var.deployment_name}-${var.vpc_name}"
   }
