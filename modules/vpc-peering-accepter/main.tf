@@ -9,6 +9,14 @@ resource "aws_vpc_peering_connection_accepter" "accepter" {
   }
 }
 
+resource "aws_vpc_peering_connection_options" "accept-dns" {
+  vpc_peering_connection_id = var.vpc_peering_connection_id
+
+  accepter {
+    allow_remote_vpc_dns_resolution = true
+  }
+}
+
 # Add a route to the source route tables to allow communication with the destination VPC
 resource "aws_route" "requester_to_accepter" {
   for_each                  = toset(var.source_route_table_ids)
