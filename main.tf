@@ -2,7 +2,8 @@ module "kms" {
   source = "./modules/kms"
   count  = var.kms_key_arn == null ? 1 : 0
 
-  deployment_name = var.deployment_name
+  deployment_name         = var.deployment_name
+  additional_key_policies = var.additional_kms_key_policies
 }
 
 locals {
