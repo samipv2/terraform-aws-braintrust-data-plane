@@ -91,6 +91,7 @@ module "services" {
   postgres_username = module.database.postgres_database_username
   postgres_password = module.database.postgres_database_password
   postgres_host     = module.database.postgres_database_address
+  postgres_port     = module.database.postgres_database_port
   redis_host        = module.redis.redis_endpoint
   redis_port        = module.redis.redis_port
 

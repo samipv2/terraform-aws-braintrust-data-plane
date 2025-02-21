@@ -34,6 +34,12 @@ variable "postgres_host" {
   description = "The host of the postgres database, optionally including the port. Format: host[:port]"
 }
 
+variable "postgres_port" {
+  type        = number
+  description = "The port of the postgres database"
+  default     = 5432
+}
+
 variable "redis_host" {
   type        = string
   description = "The host of the redis database"
