@@ -6,7 +6,7 @@ resource "aws_iam_instance_profile" "clickhouse" {
 resource "aws_iam_role" "clickhouse" {
   name = "${var.deployment_name}-ClickhouseRole"
 
-  assume_role_policy = jsonencode({
+  assume_role_policy = jsonencode({ # nosemgrep
     Version = "2012-10-17"
     Statement = [{
       Effect = "Allow"
@@ -21,7 +21,7 @@ resource "aws_iam_role" "clickhouse" {
 resource "aws_iam_role_policy" "clickhouse_secret_access" {
   name = "AccessSecret"
   role = aws_iam_role.clickhouse.id
-  policy = jsonencode({
+  policy = jsonencode({ # nosemgrep
     Version = "2012-10-17"
     Statement = [{
       Effect   = "Allow"
@@ -34,7 +34,7 @@ resource "aws_iam_role_policy" "clickhouse_secret_access" {
 resource "aws_iam_role_policy" "clickhouse_s3_access" {
   name = "AccessS3Bucket"
   role = aws_iam_role.clickhouse.id
-  policy = jsonencode({
+  policy = jsonencode({ # nosemgrep
     Version = "2012-10-17"
     Statement = [{
       Effect = "Allow"

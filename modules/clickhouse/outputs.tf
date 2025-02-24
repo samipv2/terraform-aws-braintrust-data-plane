@@ -22,3 +22,8 @@ output "clickhouse_secret_id" {
   description = "The ID of the secret version"
   value       = aws_secretsmanager_secret_version.clickhouse_secret.id
 }
+
+output "clickhouse_iam_role_arn" {
+  description = "The ARN of the IAM role for the Clickhouse instance"
+  value       = aws_iam_role.clickhouse.arn
+}
