@@ -36,14 +36,29 @@ resource "aws_iam_role_policy" "clickhouse_s3_access" {
   role = aws_iam_role.clickhouse.id
   policy = jsonencode({ # nosemgrep
     Version = "2012-10-17"
-    Statement = [{
-      Effect = "Allow"
-      Action = "s3:*"
-      Resource = [
-        "arn:aws:s3:::${local.clickhouse_bucket_name}",
-        "arn:aws:s3:::${local.clickhouse_bucket_name}/*"
-      ]
-    }]
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = "s3:*"
+        Resource = [
+          "arn:aws:s3:::${local.clickhouse_bucket_name}",
+          "arn:aws:s3:::${local.clickhouse_bucket_name}/*"
+        ]
+      },
+      {
+        Effect = "Deny"
+        Action = "s3:*"
+        Resource = [
+          "arn:aws:s3:::${local.clickhouse_bucket_name}",
+          "arn:aws:s3:::${local.clickhouse_bucket_name}/*"
+        ]
+        Condition = {
+          Bool = {
+            "aws:SecureTransport" = "false"
+          }
+        }
+      }
+    ]
   })
 }
 
