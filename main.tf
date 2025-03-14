@@ -95,8 +95,8 @@ module "services" {
   redis_host        = module.redis.redis_endpoint
   redis_port        = module.redis.redis_port
 
-  clickhouse_host      = local.clickhouse_address
-  clickhouse_secret_id = var.enable_clickhouse ? module.clickhouse[0].clickhouse_secret_id : null
+  clickhouse_host   = local.clickhouse_address
+  clickhouse_secret = var.enable_clickhouse ? module.clickhouse[0].clickhouse_secret : null
 
   brainstore_enabled                         = var.enable_brainstore
   brainstore_hostname                        = var.enable_brainstore ? module.brainstore[0].dns_name : null
