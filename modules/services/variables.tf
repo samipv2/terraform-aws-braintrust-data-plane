@@ -187,3 +187,28 @@ variable "clickhouse_secret_id" {
     error_message = "clickhouse_host must be provided when clickhouse_secret_id is set"
   }
 }
+
+variable "brainstore_enable_historical_full_backfill" {
+  type        = bool
+  description = "Enable historical full backfill for Brainstore"
+  default     = true
+}
+
+variable "brainstore_backfill_new_objects" {
+  type        = bool
+  description = "Enable backfill for new objects for Brainstore"
+  default     = true
+}
+
+variable "brainstore_backfill_disable_historical" {
+  type        = bool
+  description = "Disable historical backfill for Brainstore"
+  default     = false
+}
+
+variable "brainstore_backfill_disable_nonhistorical" {
+  type        = bool
+  description = "Disable non-historical backfill for Brainstore"
+  default     = false
+}
+
