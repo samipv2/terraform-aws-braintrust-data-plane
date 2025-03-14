@@ -23,6 +23,11 @@ output "clickhouse_secret_id" {
   value       = aws_secretsmanager_secret_version.clickhouse_secret.id
 }
 
+output "clickhouse_secret" {
+  description = "The secret containing the clickhouse credentials"
+  value       = aws_secretsmanager_secret_version.clickhouse_secret.secret_string
+}
+
 output "clickhouse_iam_role_arn" {
   description = "The ARN of the IAM role for the Clickhouse instance"
   value       = aws_iam_role.clickhouse.arn
