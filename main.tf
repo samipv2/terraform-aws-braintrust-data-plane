@@ -98,6 +98,15 @@ module "services" {
   clickhouse_host      = local.clickhouse_address
   clickhouse_secret_id = var.enable_clickhouse ? module.clickhouse[0].clickhouse_secret_id : null
 
+  brainstore_enabled                         = var.enable_brainstore
+  brainstore_hostname                        = var.enable_brainstore ? module.brainstore[0].dns_name : null
+  brainstore_s3_bucket_name                  = var.enable_brainstore ? module.brainstore[0].s3_bucket : null
+  brainstore_port                            = var.enable_brainstore ? module.brainstore[0].port : null
+  brainstore_enable_historical_full_backfill = var.brainstore_enable_historical_full_backfill
+  brainstore_backfill_new_objects            = var.brainstore_backfill_new_objects
+  brainstore_backfill_disable_historical     = var.brainstore_backfill_disable_historical
+  brainstore_backfill_disable_nonhistorical  = var.brainstore_backfill_disable_nonhistorical
+
   # Service configuration
   braintrust_org_name                 = var.braintrust_org_name
   api_handler_provisioned_concurrency = var.api_handler_provisioned_concurrency
@@ -138,6 +147,35 @@ module "clickhouse" {
   clickhouse_metadata_storage_size = var.clickhouse_metadata_storage_size
   clickhouse_subnet_id             = module.main_vpc.private_subnet_1_id
   clickhouse_security_group_ids    = [module.main_vpc.default_security_group_id]
+
+  kms_key_arn = local.kms_key_arn
+}
+
+module "brainstore" {
+  source = "./modules/brainstore"
+  count  = var.enable_brainstore ? 1 : 0
+
+  deployment_name        = var.deployment_name
+  instance_count         = var.brainstore_instance_count
+  instance_type          = var.brainstore_instance_type
+  instance_key_pair_name = var.brainstore_instance_key_pair_name
+  port                   = var.brainstore_port
+  license_key            = var.brainstore_license_key
+  version_override       = var.brainstore_version_override
+
+  database_host       = module.database.postgres_database_address
+  database_port       = module.database.postgres_database_port
+  database_secret_arn = module.database.postgres_database_secret_arn
+  redis_host          = module.redis.redis_endpoint
+  redis_port          = module.redis.redis_port
+
+  vpc_id            = module.main_vpc.vpc_id
+  security_group_id = module.main_vpc.default_security_group_id
+  private_subnet_ids = [
+    module.main_vpc.private_subnet_1_id,
+    module.main_vpc.private_subnet_2_id,
+    module.main_vpc.private_subnet_3_id
+  ]
 
   kms_key_arn = local.kms_key_arn
 }
