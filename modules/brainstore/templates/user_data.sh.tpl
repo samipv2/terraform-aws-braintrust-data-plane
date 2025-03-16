@@ -36,8 +36,9 @@ EOF
 # Set AWS region for CLI commands
 export AWS_DEFAULT_REGION=${aws_region}
 
+sudo snap install aws-cli --classic
 apt-get update
-apt-get install -y docker.io jq awscli earlyoom dstat
+apt-get install -y docker.io jq earlyoom dstat
 systemctl start docker
 systemctl enable docker
 
