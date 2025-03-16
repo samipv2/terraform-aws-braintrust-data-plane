@@ -1,13 +1,13 @@
-
 locals {
   brainstore_release_version = jsondecode(file("${path.module}/VERSIONS.json"))["brainstore"]
 }
 
 resource "aws_launch_template" "brainstore" {
-  name          = "${var.deployment_name}-brainstore"
-  image_id      = data.aws_ami.ubuntu_24_04.id
-  instance_type = var.instance_type
-  key_name      = var.instance_key_pair_name
+  name                   = "${var.deployment_name}-brainstore"
+  image_id               = data.aws_ami.ubuntu_24_04.id
+  instance_type          = var.instance_type
+  key_name               = var.instance_key_pair_name
+  update_default_version = true
 
   iam_instance_profile {
     arn = aws_iam_instance_profile.brainstore.arn
@@ -122,10 +122,10 @@ resource "aws_autoscaling_group" "brainstore" {
   # If too low, the ASG may terminate the instance before it has a chance to boot.
   health_check_grace_period = 60
   target_group_arns         = [aws_lb_target_group.brainstore.arn]
-
+  wait_for_elb_capacity     = var.instance_count
   launch_template {
     id      = aws_launch_template.brainstore.id
-    version = "$Latest"
+    version = aws_launch_template.brainstore.latest_version
   }
 
   lifecycle {
@@ -139,6 +139,7 @@ resource "aws_autoscaling_group" "brainstore" {
       min_healthy_percentage = 100
       max_healthy_percentage = 200
     }
+    triggers = ["tag"]
   }
 }
 
