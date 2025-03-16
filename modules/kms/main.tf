@@ -16,6 +16,55 @@ resource "aws_kms_key" "braintrust" {
           }
           Action   = "kms:*"
           Resource = "*"
+        },
+        {
+          Sid    = "Allow Auto Scaling service to use the key"
+          Effect = "Allow"
+          Principal = {
+            AWS = [
+              "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling"
+            ]
+          }
+          Action = [
+            "kms:Encrypt",
+            "kms:Decrypt",
+            "kms:ReEncrypt*",
+            "kms:GenerateDataKey*",
+            "kms:DescribeKey",
+          ],
+          Resource = "*"
+        },
+        {
+          Sid    = "Allow EC2 service to use the key"
+          Effect = "Allow"
+          Principal = {
+            Service = "ec2.amazonaws.com"
+          }
+          Action = [
+            "kms:Encrypt",
+            "kms:Decrypt",
+            "kms:ReEncrypt*",
+            "kms:GenerateDataKey*",
+          ],
+          Resource = "*"
+        },
+        {
+          Sid    = "Allow attachment of persistent resources"
+          Effect = "Allow"
+          Principal = {
+            AWS = [
+              "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling"
+            ]
+          }
+          Action = [
+            "kms:CreateGrant"
+          ],
+          Resource = "*",
+          Condition = {
+            Bool = {
+              "kms:GrantIsForAWSResource" : true
+            }
+          }
         }
       ],
       var.additional_key_policies

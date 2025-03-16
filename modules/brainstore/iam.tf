@@ -84,6 +84,30 @@ resource "aws_iam_role_policy" "brainstore_cloudwatch_logs_access" {
   })
 }
 
+resource "aws_iam_role_policy" "brainstore_kms_policy" {
+  count = var.kms_key_arn != null ? 1 : 0
+
+  name = "${var.deployment_name}-brainstore-kms-policy"
+  role = aws_iam_role.brainstore_ec2_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ]
+        Resource = var.kms_key_arn
+      }
+    ]
+  })
+}
+
 resource "aws_iam_instance_profile" "brainstore" {
   name = "${var.deployment_name}-brainstore-instance-profile"
   role = aws_iam_role.brainstore_ec2_role.name
