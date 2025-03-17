@@ -1,4 +1,4 @@
-# tflint-ignore-file: terraform_module_version
+# tflint-ignore-file: terraform_module_pinned_source
 
 locals {
   # This is primarily used for tagging and naming resources in your AWS account.
@@ -7,17 +7,11 @@ locals {
 }
 
 module "braintrust-data-plane" {
-  source = "braintrustdata/data-plane/braintrust"
-  # Uncomment the version line to lock to a specific version of the module.
-  # version = "1.1.0"
+  source = "github.com/braintrustdata/terraform-braintrust-data-plane"
+  # Append '?ref=<version_tag>' to lock to a specific version of the module.
 
   deployment_name     = local.deployment_name
   braintrust_org_name = "" # Add your organization name from the Braintrust UI here
-
-  ## Additional optional parameters:
-
-  # The number API Handler instances to provision and keep alive. This reduces cold start times and improves latency, with some increase in cost.
-  # api_handler_provisioned_concurrency   = 0
 
   ### Postgres configuration
   # The default is small for development and testing purposes. Recommended db.r8g.2xlarge for production.
@@ -40,6 +34,21 @@ module "braintrust-data-plane" {
   # PostgreSQL engine version for the RDS instance.
   # postgres_version                      = "15.7"
 
+  ### Brainstore configuration
+  # Enable Brainstore for faster analytics
+  enable_brainstore = false
+
+  # The license key for the Brainstore instance. You can get this from the Braintrust UI in Settings > API URL.
+  brainstore_license_key = var.brainstore_license_key
+
+  # The instance type to use for the Brainstore. Must be a Graviton instance type. Preferably with 16GB of memory and a local SSD for cache data.
+  # The default value is for tiny deployments. Recommended for production deployments is c7gd.8xlarge.
+  # brainstore_instance_type             = "c7gd.xlarge"
+
+  # The number of Brainstore instances to provision
+  # brainstore_instance_count            = 1
+
+
   ### Redis configuration
   # Default is acceptable for small production deployments. Recommended cache.m7g.large for larger deployments.
   # redis_instance_type                   = "cache.t4g.small"
@@ -56,6 +65,9 @@ module "braintrust-data-plane" {
   # quarantine_vpc_cidr                   = "10.176.0.0/16"
 
   ### Advanced configuration
+  # The number API Handler instances to provision and keep alive. This reduces cold start times and improves latency, with some increase in cost.
+  # api_handler_provisioned_concurrency   = 0
+
   # List of origins to whitelist for CORS
   # whitelisted_origins                   = []
 
@@ -77,4 +89,5 @@ module "braintrust-data-plane" {
 
   # Enable the Quarantine VPC to run user defined functions in an isolated environment. If disabled, user defined functions will not be available.
   # enable_quarantine_vpc                = true
+
 }

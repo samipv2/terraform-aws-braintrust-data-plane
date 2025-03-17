@@ -3,12 +3,13 @@
 #   backend "s3" {
 #     # Example: "us-east-1"
 #     region         = "<your AWS region>"
-#     # Example: "terraform-state-lock"
-#     dynamodb_table = "<your-dynamodb-table-name>"
+
 #     # Example: "yourcompany-terraform-state"
 #     bucket         = "<s3-bucket-name>"
+#     use_lockfile = true
 #     # The path in S3 to store the state of this terraform directory.
-#     key = "braintrust"
+#     # Change this for each environment you deploy to.
+#     key = "braintrust.tfstate"
 #   }
 # }
 
