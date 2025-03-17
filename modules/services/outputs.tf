@@ -1,6 +1,6 @@
 output "api_url" {
   description = "The primary endpoint for the dataplane API. This is the value that should be entered into the braintrust dashboard under API URL."
-  value       = aws_cloudfront_distribution.dataplane.domain_name
+  value       = "https://${aws_cloudfront_distribution.dataplane.domain_name}"
 }
 
 output "ai_proxy_url" {
