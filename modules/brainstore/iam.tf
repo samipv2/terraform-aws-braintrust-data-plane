@@ -85,8 +85,6 @@ resource "aws_iam_role_policy" "brainstore_cloudwatch_logs_access" {
 }
 
 resource "aws_iam_role_policy" "brainstore_kms_policy" {
-  count = var.kms_key_arn != null ? 1 : 0
-
   name = "${var.deployment_name}-brainstore-kms-policy"
   role = aws_iam_role.brainstore_ec2_role.id
 

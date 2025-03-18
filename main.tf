@@ -1,13 +1,13 @@
 module "kms" {
   source = "./modules/kms"
-  count  = var.kms_key_arn == null ? 1 : 0
+  count  = var.kms_key_arn == "" ? 1 : 0
 
   deployment_name         = var.deployment_name
   additional_key_policies = var.additional_kms_key_policies
 }
 
 locals {
-  kms_key_arn = var.kms_key_arn != null ? var.kms_key_arn : module.kms[0].key_arn
+  kms_key_arn = var.kms_key_arn != "" ? var.kms_key_arn : module.kms[0].key_arn
   clickhouse_address = var.use_external_clickhouse_address != null ? var.use_external_clickhouse_address : (
     var.enable_clickhouse ? module.clickhouse[0].clickhouse_instance_private_ip : null
   )

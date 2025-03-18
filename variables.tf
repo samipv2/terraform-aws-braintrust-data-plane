@@ -34,7 +34,7 @@ variable "deployment_name" {
 variable "kms_key_arn" {
   description = "Existing KMS key ARN to use for encrypting resources. If not provided, a new key will be created. DO NOT change this after deployment. If you do, it will attempt to destroy your DB and prior S3 objects will no longer be readable."
   type        = string
-  default     = null
+  default     = ""
 }
 
 variable "additional_kms_key_policies" {

@@ -50,7 +50,6 @@ variable "instance_key_pair_name" {
 variable "kms_key_arn" {
   type        = string
   description = "The ARN of the KMS key to use for encrypting the Brainstore disks and S3 bucket. If not provided, AWS managed keys will be used."
-  default     = null
 }
 
 variable "vpc_id" {
