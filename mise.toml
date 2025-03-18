@@ -2,6 +2,7 @@
 tflint = "latest"
 pre-commit = "latest"
 terraform = "1.10"
+uv = "latest"
 
 [tasks]
 lint = ["terraform fmt -recursive", "tflint --recursive"]

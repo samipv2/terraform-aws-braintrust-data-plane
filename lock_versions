@@ -1,4 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv --quiet run --script
+# /// script
+# dependencies = [
+#   "boto3",
+# ]
+# ///
+
 """
 This script locks specific versions of lambdas and containers as a part of the
 release process of the terraform module.
