@@ -49,12 +49,13 @@ module "quarantine_vpc" {
 }
 
 module "database" {
-  source                 = "./modules/database"
-  deployment_name        = var.deployment_name
-  postgres_instance_type = var.postgres_instance_type
-  postgres_storage_size  = var.postgres_storage_size
-  postgres_storage_type  = var.postgres_storage_type
-  postgres_version       = var.postgres_version
+  source                    = "./modules/database"
+  deployment_name           = var.deployment_name
+  postgres_instance_type    = var.postgres_instance_type
+  postgres_storage_size     = var.postgres_storage_size
+  postgres_max_storage_size = var.postgres_max_storage_size
+  postgres_storage_type     = var.postgres_storage_type
+  postgres_version          = var.postgres_version
   database_subnet_ids = [
     module.main_vpc.private_subnet_1_id,
     module.main_vpc.private_subnet_2_id,

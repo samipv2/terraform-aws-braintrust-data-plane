@@ -10,11 +10,12 @@ resource "aws_db_instance" "main" {
 
   instance_class = var.postgres_instance_type
 
-  storage_encrypted  = true
-  allocated_storage  = var.postgres_storage_size
-  storage_type       = var.postgres_storage_type
-  storage_throughput = var.postgres_storage_throughput
-  iops               = var.postgres_storage_iops
+  storage_encrypted     = true
+  allocated_storage     = var.postgres_storage_size
+  max_allocated_storage = var.postgres_max_storage_size
+  storage_type          = var.postgres_storage_type
+  storage_throughput    = var.postgres_storage_throughput
+  iops                  = var.postgres_storage_iops
 
   db_name  = "postgres"
   username = local.postgres_username
