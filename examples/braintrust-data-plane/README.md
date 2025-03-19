@@ -29,7 +29,3 @@ To configure your Organization to use your new data plane, click your user icon 
 Paste the API URL into the text field and click Save. Click to copy the test ping command and run it in your terminal to verify that your data plane is working.
 
 ![Verifying the API URL in Braintrust](/assets/Braintrust-API-URL-2.png)
-
-Copy the Brainstore license key.
-
-
