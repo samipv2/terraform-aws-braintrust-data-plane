@@ -210,6 +210,17 @@ resource "aws_iam_policy" "api_handler_policy" {
         Action   = ["ec2:DescribeSecurityGroups", "ec2:DescribeSubnets", "ec2:DescribeVpcs"]
         Effect   = "Allow"
         Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ]
+        Resource = var.kms_key_arn
       }
     ]
     Version = "2012-10-17"
