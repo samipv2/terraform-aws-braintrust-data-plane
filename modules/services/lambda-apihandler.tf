@@ -36,16 +36,13 @@ resource "aws_lambda_function" "api_handler" {
       ORG_NAME                   = var.braintrust_org_name
       BRAINTRUST_DEPLOYMENT_NAME = var.deployment_name
 
-      PG_URL                        = local.postgres_url
-      REDIS_HOST                    = var.redis_host
-      REDIS_PORT                    = var.redis_port
-      CATCHUP_ETL_ARN               = aws_lambda_function.catchup_etl.arn
-      WHITELISTED_ORIGINS           = join(",", var.whitelisted_origins)
-      RESPONSE_BUCKET               = aws_s3_bucket.lambda_responses_bucket.id
-      CODE_BUNDLE_BUCKET            = aws_s3_bucket.code_bundle_bucket.id
-      RESPONSE_BUCKET_KMS_KEY_ID    = var.kms_key_arn
-      CODE_BUNDLE_BUCKET_KMS_KEY_ID = var.kms_key_arn
-      ATTACHMENT_BUCKET_KMS_KEY_ID  = var.kms_key_arn
+      PG_URL              = local.postgres_url
+      REDIS_HOST          = var.redis_host
+      REDIS_PORT          = var.redis_port
+      CATCHUP_ETL_ARN     = aws_lambda_function.catchup_etl.arn
+      WHITELISTED_ORIGINS = join(",", var.whitelisted_origins)
+      RESPONSE_BUCKET     = aws_s3_bucket.lambda_responses_bucket.id
+      CODE_BUNDLE_BUCKET  = aws_s3_bucket.code_bundle_bucket.id
 
       OUTBOUND_RATE_LIMIT_WINDOW_MINUTES = var.outbound_rate_limit_window_minutes
       OUTBOUND_RATE_LIMIT_MAX_REQUESTS   = var.outbound_rate_limit_max_requests
