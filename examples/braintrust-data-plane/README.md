@@ -22,7 +22,7 @@ api_url = "https://dx6ntff6gocr6.cloudfront.net"
 To configure your Organization to use your new data plane, click your user icon on the top right > Settings > API URL.
 
 > [!WARNING]
-> If you are testing, it is HIGHLY recommended that you create a new Braintrust Organization for testing purposes. If you change your live Organization's API URL, you might break users who are currently using it.
+> If you are testing, it is HIGHLY recommended that [you create a new Braintrust Organization](https://www.braintrust.dev/app/setup) for testing your new data plane. If you change your live Organization's API URL, you might break users who are currently using it.
 
 ![Setting the API URL in Braintrust](/assets/Braintrust-API-URL.png)
 
