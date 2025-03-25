@@ -7,6 +7,8 @@ resource "aws_s3_bucket" "code_bundle_bucket" {
     # S3 does not support renaming buckets
     ignore_changes = [bucket_prefix]
   }
+
+  tags = local.common_tags
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "code_bundle_bucket" {
@@ -30,6 +32,8 @@ resource "aws_s3_bucket" "lambda_responses_bucket" {
     # S3 does not support renaming buckets
     ignore_changes = [bucket_prefix]
   }
+
+  tags = local.common_tags
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "lambda_responses_bucket" {

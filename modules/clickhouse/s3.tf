@@ -6,6 +6,8 @@ resource "aws_s3_bucket" "clickhouse_s3_bucket" {
     # S3 does not support renaming buckets
     ignore_changes = [bucket_prefix]
   }
+
+  tags = local.common_tags
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "clickhouse_s3_bucket" {

@@ -45,12 +45,15 @@ resource "aws_lambda_function" "catchup_etl" {
   tracing_config {
     mode = "PassThrough"
   }
+
+  tags = local.common_tags
 }
 
 resource "aws_cloudwatch_event_rule" "catchup_etl_schedule" {
   name                = "${var.deployment_name}-catchup-etl-schedule"
   description         = "Schedule for Braintrust Catchup ETL Lambda function"
   schedule_expression = "rate(10 minutes)"
+  tags                = local.common_tags
 }
 
 resource "aws_cloudwatch_event_target" "catchup_etl_target" {

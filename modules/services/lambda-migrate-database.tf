@@ -30,6 +30,8 @@ resource "aws_lambda_function" "migrate_database" {
     subnet_ids         = var.service_subnet_ids
     security_group_ids = var.service_security_group_ids
   }
+
+  tags = local.common_tags
 }
 
 # This is mainly for convenience to be able to manually invoke the latest

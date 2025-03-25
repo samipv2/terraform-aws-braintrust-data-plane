@@ -1,5 +1,8 @@
 locals {
   brainstore_release_version = jsondecode(file("${path.module}/VERSIONS.json"))["brainstore"]
+  common_tags = {
+    BraintrustDeploymentName = var.deployment_name
+  }
 }
 
 resource "aws_launch_template" "brainstore" {
@@ -50,23 +53,23 @@ resource "aws_launch_template" "brainstore" {
 
   tag_specifications {
     resource_type = "instance"
-    tags = {
+    tags = merge({
       Name = "${var.deployment_name}-brainstore"
-    }
+    }, local.common_tags)
   }
 
   tag_specifications {
     resource_type = "volume"
-    tags = {
+    tags = merge({
       Name = "${var.deployment_name}-brainstore"
-    }
+    }, local.common_tags)
   }
 
   tag_specifications {
     resource_type = "network-interface"
-    tags = {
+    tags = merge({
       Name = "${var.deployment_name}-brainstore"
-    }
+    }, local.common_tags)
   }
 }
 
@@ -81,6 +84,8 @@ resource "aws_lb" "brainstore" {
     # Changing security groups requires a new NLB.
     create_before_destroy = true
   }
+
+  tags = local.common_tags
 }
 
 resource "aws_lb_target_group" "brainstore" {
@@ -98,6 +103,8 @@ resource "aws_lb_target_group" "brainstore" {
     timeout             = 10
     interval            = 10
   }
+
+  tags = local.common_tags
 }
 
 resource "aws_lb_listener" "brainstore" {
@@ -109,6 +116,7 @@ resource "aws_lb_listener" "brainstore" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.brainstore.arn
   }
+  tags = local.common_tags
 }
 
 resource "aws_autoscaling_group" "brainstore" {
@@ -143,9 +151,18 @@ resource "aws_autoscaling_group" "brainstore" {
   }
 
   tag {
-    key                 = "BraintrustDeploymentName"
-    value               = var.deployment_name
+    key                 = "Name"
+    value               = "${var.deployment_name}-brainstore"
     propagate_at_launch = true
+  }
+
+  dynamic "tag" {
+    for_each = local.common_tags
+    content {
+      key                 = tag.key
+      value               = tag.value
+      propagate_at_launch = true
+    }
   }
 }
 

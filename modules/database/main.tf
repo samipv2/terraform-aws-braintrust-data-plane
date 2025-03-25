@@ -1,6 +1,9 @@
 locals {
   postgres_username = jsondecode(aws_secretsmanager_secret_version.database_secret.secret_string)["username"]
   postgres_password = jsondecode(aws_secretsmanager_secret_version.database_secret.secret_string)["password"]
+  common_tags = {
+    BraintrustDeploymentName = var.deployment_name
+  }
 }
 
 resource "aws_db_instance" "main" {
@@ -39,6 +42,8 @@ resource "aws_db_instance" "main" {
   performance_insights_retention_period = 7
 
   kms_key_id = var.kms_key_arn
+
+  tags = local.common_tags
 
   lifecycle {
     # These can't be changed without recreating the RDS instance
@@ -79,6 +84,8 @@ resource "aws_db_parameter_group" "main" {
   lifecycle {
     create_before_destroy = true
   }
+
+  tags = local.common_tags
 }
 
 resource "aws_db_subnet_group" "main" {
@@ -89,6 +96,8 @@ resource "aws_db_subnet_group" "main" {
   lifecycle {
     create_before_destroy = true
   }
+
+  tags = local.common_tags
 }
 
 resource "aws_iam_role" "db_monitoring" {
@@ -106,6 +115,8 @@ resource "aws_iam_role" "db_monitoring" {
       }
     ]
   })
+
+  tags = local.common_tags
 }
 
 resource "aws_iam_role_policy_attachment" "db_monitoring" {
@@ -135,4 +146,6 @@ resource "aws_secretsmanager_secret" "database_secret" {
   name_prefix = "${var.deployment_name}/DatabaseSecret-"
   description = "Username/password for the main Braintrust RDS database"
   kms_key_id  = var.kms_key_arn
+
+  tags = local.common_tags
 }

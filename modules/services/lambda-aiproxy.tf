@@ -48,6 +48,8 @@ resource "aws_lambda_function" "ai_proxy" {
   tracing_config {
     mode = "PassThrough"
   }
+
+  tags = local.common_tags
 }
 
 resource "aws_lambda_function_url" "ai_proxy" {
