@@ -27,7 +27,7 @@ module "braintrust-data-plane" {
 
   ### Postgres configuration
   # The default is small for development and testing purposes. Recommended db.r8g.2xlarge for production.
-  # postgres_instance_type                = "db.t4g.xlarge"
+  # postgres_instance_type                = "db.r8g.2xlarge"
 
   # Storage size (in GB) for the RDS instance. Recommended 1000GB for production.
   # postgres_storage_size                 = 1000
@@ -58,19 +58,18 @@ module "braintrust-data-plane" {
   # postgres_multi_az                     = true
 
   ### Brainstore configuration
-  # Enable Brainstore for faster analytics
-  enable_brainstore = true
-
   # The license key for the Brainstore instance. You can get this from the Braintrust UI in Settings > API URL.
   brainstore_license_key = var.brainstore_license_key
 
-  # The instance type to use for the Brainstore. Recommended Graviton instance type with 16GB of memory and a local SSD for cache data.
-  # Recommended for production deployments is c7gd.8xlarge.
-  # brainstore_instance_type             = "c7gd.8xlarge"
+  # The number of Brainstore reader instances to provision
+  # Recommended Graviton instance type with 16GB of memory
+  brainstore_instance_count = 2
+  brainstore_instance_type  = "c8gd.4xlarge"
 
-  # The number of Brainstore instances to provision
-  # brainstore_instance_count            = 1
-
+  # The number of dedicated Brainstore writer nodes to create
+  # Recommended Graviton instance type with 32GB of memory
+  brainstore_writer_instance_count = 1
+  brainstore_writer_instance_type  = "c8gd.8xlarge"
 
   ### Redis configuration
   # Default is acceptable for small production deployments. Recommended cache.m7g.large for larger deployments.
@@ -103,4 +102,10 @@ module "braintrust-data-plane" {
   # The time frame in minutes over which rate per-user rate limits are accumulated
   # outbound_rate_limit_window_minutes    = 1
 
+  ## Braintrust Support
+  # Enable sharing of Cloudwatch logs with Braintrust staff
+  # enable_braintrust_support_logs_access = true
+
+  # Enable Bastion SSH access for Braintrust staff. This will create a bastion host and a security group that allows EC2 instance connect access from the Braintrust IAM Role.
+  # enable_braintrust_support_shell_access = true
 }
