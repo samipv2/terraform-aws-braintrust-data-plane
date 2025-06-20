@@ -185,6 +185,12 @@ variable "custom_certificate_arn" {
   default     = null
 }
 
+variable "use_global_ai_proxy" {
+  description = "Whether to use the global Cloudflare proxy"
+  type        = bool
+  default     = false
+}
+
 variable "kms_key_arn" {
   description = "KMS key ARN to use for encrypting resources. If not provided, the default AWS managed key is used. DO NOT change this after deployment. If you do, prior S3 objects will no longer be readable."
   type        = string
@@ -246,12 +252,6 @@ variable "brainstore_default" {
 variable "brainstore_disable_optimization_worker" {
   type        = bool
   description = "Whether to disable the optimization worker in Brainstore"
-  default     = false
-}
-
-variable "brainstore_vacuum_object_all" {
-  type        = bool
-  description = "Whether to vacuum all objects in Brainstore"
   default     = false
 }
 
