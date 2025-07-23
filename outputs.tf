@@ -44,8 +44,13 @@ output "main_vpc_private_route_table_id" {
 }
 
 output "brainstore_security_group_id" {
-  value       = module.brainstore[0].brainstore_instance_security_group_id
+  value       = var.enable_brainstore ? module.brainstore[0].brainstore_instance_security_group_id : null
   description = "ID of the security group for the Brainstore instances"
+}
+
+output "brainstore_s3_bucket_name" {
+  value       = var.enable_brainstore ? module.brainstore[0].s3_bucket : null
+  description = "Name of the Brainstore S3 bucket"
 }
 
 output "rds_security_group_id" {
