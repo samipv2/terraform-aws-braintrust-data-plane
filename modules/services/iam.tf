@@ -243,6 +243,17 @@ resource "aws_iam_policy" "api_handler_policy" {
           "kms:DescribeKey"
         ]
         Resource = var.kms_key_arn
+      },
+      {
+        Sid      = "AssumeRoleInCustomerAccountForS3Export"
+        Action   = "sts:AssumeRole"
+        Effect   = "Allow"
+        Resource = "*"
+        Condition = {
+          StringLike = {
+            "sts:ExternalId" = "bt:*"
+          }
+        }
       }
     ]
     Version = "2012-10-17"

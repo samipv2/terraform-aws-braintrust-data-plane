@@ -531,6 +531,7 @@ object({
     BillingCron              = map(string)
     MigrateDatabaseFunction  = map(string)
     QuarantineWarmupFunction = map(string)
+    AutomationCron           = map(string)
   })
 ```
 
@@ -540,6 +541,7 @@ Default:
 {
   "AIProxy": {},
   "APIHandler": {},
+  "AutomationCron": {},
   "BillingCron": {},
   "CatchupETL": {},
   "MigrateDatabaseFunction": {},
