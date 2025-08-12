@@ -237,14 +237,6 @@ Type: `bool`
 
 Default: `false`
 
-### <a name="input_enable_billing_telemetry"></a> [enable\_billing\_telemetry](#input\_enable\_billing\_telemetry)
-
-Description: Enable billing telemetry. Do not enable this unless instructed by support.
-
-Type: `bool`
-
-Default: `false`
-
 ### <a name="input_enable_brainstore"></a> [enable\_brainstore](#input\_enable\_brainstore)
 
 Description: Enable Brainstore for faster analytics
@@ -324,6 +316,22 @@ Description: Optional override for the lambda version tag. Don't set this unless
 Type: `string`
 
 Default: `null`
+
+### <a name="input_monitoring_telemetry"></a> [monitoring\_telemetry](#input\_monitoring\_telemetry)
+
+Description: The telemetry to send to Braintrust's control plane to monitor your deployment. Should be in the form of comma-separated values.
+
+Available options:
+- status: Health check information (default)
+- metrics: System metrics (CPU/memory) and Braintrust-specific metrics like indexing lag (default)
+- usage: Billing usage telemetry for aggregate usage metrics
+- memprof: Memory profiling statistics and heap usage patterns
+- logs: Application logs
+- traces: Distributed tracing data
+
+Type: `string`
+
+Default: `"status,metrics"`
 
 ### <a name="input_outbound_rate_limit_max_requests"></a> [outbound\_rate\_limit\_max\_requests](#input\_outbound\_rate\_limit\_max\_requests)
 

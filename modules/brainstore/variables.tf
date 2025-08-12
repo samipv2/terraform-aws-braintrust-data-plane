@@ -131,6 +131,30 @@ variable "brainstore_vacuum_all_objects" {
   default     = false
 }
 
+variable "monitoring_telemetry" {
+  description = <<-EOT
+    The telemetry to send to Braintrust's control plane to monitor your deployment. Should be in the form of comma-separated values.
+
+    Available options:
+    - status: Health check information (default)
+    - metrics: System metrics (CPU/memory) and Braintrust-specific metrics like indexing lag (default)
+    - usage: Billing usage telemetry for aggregate usage metrics
+    - memprof: Memory profiling statistics and heap usage patterns
+    - logs: Application logs
+    - traces: Distributed tracing data
+  EOT
+  type        = string
+  default     = "status,metrics"
+
+  validation {
+    condition = var.monitoring_telemetry == "" || alltrue([
+      for item in split(",", var.monitoring_telemetry) :
+      contains(["metrics", "logs", "traces", "status", "memprof", "usage"], trimspace(item))
+    ])
+    error_message = "The monitoring_telemetry value must be a comma-separated list containing only: metrics, logs, traces, status, memprof, usage."
+  }
+}
+
 variable "s3_bucket_retention_days" {
   type        = number
   description = "The number of days to retain non-current S3 objects. e.g. deleted objects"

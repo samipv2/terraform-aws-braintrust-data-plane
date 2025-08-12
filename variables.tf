@@ -203,12 +203,6 @@ variable "ai_proxy_reserved_concurrent_executions" {
   default     = -1 # -1 means no reserved concurrency. Use up to the max concurrency limit in your AWS account.
 }
 
-variable "enable_billing_telemetry" {
-  description = "Enable billing telemetry. Do not enable this unless instructed by support."
-  type        = bool
-  default     = false
-}
-
 variable "disable_billing_telemetry_aggregation" {
   description = "Disable billing telemetry aggregation. Do not disable this unless instructed by support."
   type        = bool
@@ -392,6 +386,30 @@ variable "brainstore_vacuum_all_objects" {
   type        = bool
   description = "Enable vacuuming of all objects in Brainstore"
   default     = false
+}
+
+variable "monitoring_telemetry" {
+  description = <<-EOT
+    The telemetry to send to Braintrust's control plane to monitor your deployment. Should be in the form of comma-separated values.
+
+    Available options:
+    - status: Health check information (default)
+    - metrics: System metrics (CPU/memory) and Braintrust-specific metrics like indexing lag (default)
+    - usage: Billing usage telemetry for aggregate usage metrics
+    - memprof: Memory profiling statistics and heap usage patterns
+    - logs: Application logs
+    - traces: Distributed tracing data
+  EOT
+  type        = string
+  default     = "status,metrics"
+
+  validation {
+    condition = var.monitoring_telemetry == "" || alltrue([
+      for item in split(",", var.monitoring_telemetry) :
+      contains(["metrics", "logs", "traces", "status", "memprof", "usage"], trimspace(item))
+    ])
+    error_message = "The monitoring_telemetry value must be a comma-separated list containing only: metrics, logs, traces, status, memprof, usage."
+  }
 }
 
 variable "brainstore_extra_env_vars" {
