@@ -58,7 +58,7 @@ resource "aws_launch_template" "brainstore" {
     monitoring_telemetry        = var.monitoring_telemetry
     # Important note: if there are no dedicated writer nodes, this node serves as a read/writer node
     brainstore_disable_optimization_worker = local.has_writer_nodes ? true : var.brainstore_disable_optimization_worker
-    brainstore_vacuum_all_objects          = local.has_writer_nodes ? false : var.brainstore_vacuum_all_objects
+    brainstore_disable_vacuum              = local.has_writer_nodes ? true : false
     is_dedicated_writer_node               = "false"
     extra_env_vars                         = var.extra_env_vars
     internal_observability_api_key         = var.internal_observability_api_key
