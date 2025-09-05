@@ -186,11 +186,7 @@ resource "aws_autoscaling_group" "brainstore" {
       propagate_at_launch = true
     }
   } 
-  timeouts {
-    create = "20m"   
-    update = "15m"
-    delete = "10m"
-  }
+  wait_for_capacity_timeout="20m"
 }
 
 data "aws_ami" "ubuntu_24_04" {
