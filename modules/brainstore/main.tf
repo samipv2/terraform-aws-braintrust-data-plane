@@ -185,6 +185,11 @@ resource "aws_autoscaling_group" "brainstore" {
       value               = tag.value
       propagate_at_launch = true
     }
+  } 
+  timeouts {
+    create = "20m"   
+    update = "15m"
+    delete = "10m"
   }
 }
 

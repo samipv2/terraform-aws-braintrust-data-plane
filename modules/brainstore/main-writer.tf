@@ -178,4 +178,9 @@ resource "aws_autoscaling_group" "brainstore_writer" {
       propagate_at_launch = true
     }
   }
+  timeouts {
+    create = "20m"   
+    update = "15m"
+    delete = "10m"
+  }
 }
